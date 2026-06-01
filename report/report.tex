@@ -1,0 +1,66 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\definecolor{link}{RGB}{14,123,109}
+\usepackage[colorlinks=true,urlcolor=link,linkcolor=link]{hyperref}
+\setlist{nosep,leftmargin=1.3em}
+\pagestyle{empty}
+
+\title{\vspace{-2.5em}Stress-Testing Instruction Chatbots for Economics Experiments:\\
+\large Which Workflow and Model Best Preserve Treatment Integrity?}
+\author{Can \c{C}elebi}
+\date{\small Preliminary --- \today}
+
+\begin{document}
+\maketitle
+\vspace{-1.8em}
+
+\noindent
+An instruction chatbot deployed inside an economics experiment is not a help tool---it is part of
+the \emph{manipulation}. It must clarify rules and refuse to supply advice, expected-value
+computations, or strategic hints. We built an adversarial \textbf{stress-test harness} that pits
+synthetic ``subject'' personas against the bot over thousands of multi-turn conversations and scores
+every reply with an independent LLM judge on three metrics: bias-leak (the integrity metric), factual
+error, and incoherence. We then asked a single deployment question: \emph{which pipeline architecture
+and which model leak the least?}
+
+\smallskip
+\noindent\textbf{Design.} A two-phase plan over two scenarios (an easier mid-experiment context and a
+$\sim$2$\times$ harder cold-start context) and seven adversarial personas, 15 runs $\times$ 15 turns
+per cell. \textbf{Phase~A} (15,750 judged turns) screens five architectures, from a single
+all-in-one call to a classifier $\to$ router $\to$ per-class corrector, all at the cheapest model.
+\textbf{Phase~B} escalates the winner one lever at a time: a corrector pass, reasoning effort
+(low/medium/high), and model capability.
+
+\smallskip
+\noindent\textbf{Headline results.}
+\begin{itemize}
+  \item \textbf{Simpler is safer.} The single-call pipeline is Pareto-dominant on bias-leak, cost, and
+    latency in every cell. Every added agent (classifier, low-confidence probe gate, corrector)
+    leaves bias the same or worse---a $1.2$--$4.1\times$ penalty---because the extra steps reframe and
+    re-surface the subject's question, which is itself a contamination channel.
+  \item \textbf{Capability is the only lever that works.} Holding the winning architecture fixed,
+    upgrading the base model (\texttt{nano}$\to$\texttt{mini}) cut bias-leak \textbf{46\%} on the
+    easier scenario and \textbf{68\%} on the harder one, improved factuality, and ran faster at
+    non-binding cost. Reasoning effort was neutral-to-harmful at every level tested; a corrector pass
+    made bias \emph{worse}.
+  \item \textbf{Integrity is a per-conversation property.} Single-turn leak risk is small but
+    compounds across a 15-turn dialogue; we report per-conversation consistency, not single-shot
+    accuracy.
+\end{itemize}
+
+\smallskip
+\noindent\textbf{Caveat.} The headline upgrade cell currently shares one model between bot and judge,
+so a small self-leniency artefact cannot yet be excluded; an independent-judge confirmation cell is in
+flight. We therefore state the finding as \emph{``model capability is the lever that works,''} not as
+a final production recommendation.
+
+\smallskip
+\noindent\textbf{Full results, interactive figures, and methods:}\\
+\href{https://can-celebi.github.io/chatbot-for-experiments/}{\texttt{can-celebi.github.io/chatbot-for-experiments}}
+
+\end{document}

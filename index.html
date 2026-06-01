@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stress-Testing Instruction Chatbots for Experiments</title>
+<meta name="description" content="An adversarial stress-test harness that finds which LLM chatbot workflow and model best preserves treatment integrity in economics experiments.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+</head>
+<body>
+
+<!-- ===================== NAV ===================== -->
+<header class="nav" id="top">
+  <div class="nav-inner">
+    <a class="brand" href="#top">chatbot&#8209;for&#8209;experiments</a>
+    <nav class="nav-links">
+      <a href="#question">Questions</a>
+      <a href="#design">Design</a>
+      <a href="#experiments">Experiments</a>
+      <a href="#results">Results</a>
+      <a href="#discussion">Discussion</a>
+      <a class="ghbtn" href="https://github.com/can-celebi/chatbot-for-experiments" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Methods · experimental economics × LLM agents</div>
+    <h1>Which chatbot workflow keeps an experiment&nbsp;<span class="grad">honest</span>?</h1>
+    <p class="lede">
+      An instruction chatbot for an economics experiment is not a helper &mdash; it is part of the
+      <em>manipulation</em>. It must clarify rules and refuse to give advice, expected values, or
+      strategic hints. We built an adversarial <strong>stress-test harness</strong> that attacks the
+      bot with synthetic subjects across thousands of conversations and measures exactly which
+      <strong>pipeline architecture</strong> and <strong>model</strong> leak the least.
+    </p>
+    <div class="chips" id="hero-chips"></div>
+    <div class="hero-cta">
+      <a class="btn primary" href="#results">See the results</a>
+      <a class="btn" href="#design">How it works</a>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PRELIM BANNER ===================== -->
+<div class="banner" id="prelim-banner">
+  <strong>Preliminary.</strong> Phase&nbsp;A (architecture screen) is complete. Phase&nbsp;B
+  (escalation screen) is still running &mdash; reasoning-high and the full <code>gpt-5.4</code> /
+  independent-judge cells are in flight. Figures update as cells land.
+  <span id="gen-stamp"></span>
+</div>
+
+<!-- ===================== TL;DR ===================== -->
+<section class="section tldr">
+  <h2 class="kicker">The three findings</h2>
+  <div class="cards three">
+    <div class="card finding">
+      <div class="fnum">01</div>
+      <h3>Simpler is safer</h3>
+      <p>A <strong>single LLM call</strong> (<code>P-all</code>) beats every multi-agent pipeline on
+      bias-leak, cost, and latency in every cell. Adding a classifier, a probe gate, or a corrector
+      <em>raises</em> leakage by 1.2&ndash;4.1&times;.</p>
+    </div>
+    <div class="card finding">
+      <div class="fnum">02</div>
+      <h3>Capability is the lever</h3>
+      <p>Of every knob we turned, only <strong>model capability</strong> moved the frontier outward.
+      Upgrading <code>nano&nbsp;&rarr;&nbsp;mini</code> cut bias-leak <strong>46&ndash;68%</strong> and
+      improved factuality &mdash; faster, and at non-binding cost.</p>
+    </div>
+    <div class="card finding">
+      <div class="fnum">03</div>
+      <h3>Guardrails &amp; reasoning don't pay</h3>
+      <p>A verifier/corrector pass made bias <em>worse</em>. Reasoning effort (low&rarr;med&rarr;high)
+      was neutral-to-harmful. Extra machinery added contamination surface, not safety.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== RESEARCH QUESTIONS ===================== -->
+<section class="section" id="question">
+  <h2 class="kicker">Research questions</h2>
+  <p class="section-lead">The project asks a single deployment question with three measurable parts.
+    All are answered on the data below; we deliberately scope to what was tested.</p>
+  <div class="cards two">
+    <div class="card">
+      <h3>Q1 &middot; Does pipeline complexity buy reliability?</h3>
+      <p>Across five architectures from one-call to classifier&nbsp;+&nbsp;router&nbsp;+&nbsp;per-class
+      corrector &mdash; do extra guardrail agents reduce bias-leak, factual error, and incoherence?</p>
+    </div>
+    <div class="card">
+      <h3>Q2 &middot; Which single lever reduces leakage most?</h3>
+      <p>Holding the winning architecture fixed, we escalate one knob at a time &mdash; a corrector
+      pass, reasoning effort, and model capability &mdash; to find the highest-value intervention.</p>
+    </div>
+    <div class="card">
+      <h3>Q3 &middot; Are leaks consistent over a conversation?</h3>
+      <p>Treatment integrity is a <em>per-conversation</em> property. We measure how single-turn
+      leak risk accumulates over a 15-turn dialogue (a pass<sup>k</sup>-style consistency view).</p>
+    </div>
+    <div class="card subtle">
+      <h3>Out of scope (not yet tested)</h3>
+      <p>Real-time adaptive degradation policies and cross-experiment generalization are part of the
+      broader program but are <em>not</em> claimed here &mdash; this report measures architecture,
+      lever, and consistency only.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SYSTEM DESIGN ===================== -->
+<section class="section alt" id="design">
+  <h2 class="kicker">System design</h2>
+  <p class="section-lead">The same modular agents are composed into five pipelines. A stress harness
+    pits adversarial synthetic subjects against the bot and an independent LLM judge scores every reply.</p>
+
+  <h3 class="subhead">The pipelines under test</h3>
+  <div class="pipe-grid">
+    <div class="pipe best"><div class="pname">P-all</div><div class="pflow">single all-in-one call</div><div class="ptag">Phase A winner</div></div>
+    <div class="pipe"><div class="pname">P2</div><div class="pflow">classify &rarr; specialist</div></div>
+    <div class="pipe"><div class="pname">P2-probe</div><div class="pflow">classify <span class="muted">(+ low-confidence probe gate)</span> &rarr; specialist</div></div>
+    <div class="pipe"><div class="pname">P-perclass</div><div class="pflow">classify &rarr; specialist &rarr; per-class corrector</div></div>
+    <div class="pipe"><div class="pname">P-probe-perclass</div><div class="pflow">probe gate + classify &rarr; specialist &rarr; corrector</div></div>
+  </div>
+
+  <div class="cards two" style="margin-top:2rem">
+    <div class="card">
+      <h3>7 adversarial personas</h3>
+      <p>Synthetic subjects (<code>gpt-5.4-nano</code>, temp 0.8) each probe a distinct failure vector:</p>
+      <ul class="taglist">
+        <li>advice-seeker</li><li>complexity-seeker</li><li>example-farmer</li>
+        <li>demand-purpose-prober</li><li>confused-inquirer</li><li>jailbreaker</li>
+        <li>frustration-spiral</li>
+      </ul>
+      <p class="fine">Phase&nbsp;A split these into a high-risk <em>adversarial</em> tier and a low-risk
+        <em>theatrical</em> tier; the latter were dropped for Phase&nbsp;B.</p>
+    </div>
+    <div class="card">
+      <h3>3 judged metrics</h3>
+      <ul class="metriclist">
+        <li><span class="dot bias"></span><strong>Bias-leak</strong> &mdash; advice, expected-value
+          computation, or dominance hints. <em>The integrity metric.</em></li>
+        <li><span class="dot fact"></span><strong>Factual error</strong> &mdash; reply inconsistent
+          with the experiment's rules.</li>
+        <li><span class="dot coh"></span><strong>Incoherence</strong> &mdash; reply syntactically or
+          semantically broken.</li>
+      </ul>
+      <p class="fine">Scored per turn by an independent <code>gpt-5.4-mini</code> judge with
+        token-logprob confidence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== EXPERIMENTAL DESIGN ===================== -->
+<section class="section" id="experiments">
+  <h2 class="kicker">Experimental design</h2>
+  <p class="section-lead">A two-phase plan: screen architectures at the cheapest model, then escalate
+    the winner one lever at a time. Two scenarios anchor the bot at different points of the experiment.</p>
+
+  <div class="cards two">
+    <div class="card scen">
+      <h3><span class="dot rm"></span>random-mid <span class="easy">easier</span></h3>
+      <p id="scen-rm">Task 7 of 14, row 12. Subject knows only the Random Box rule. Mid-experience, partial information.</p>
+    </div>
+    <div class="card scen">
+      <h3><span class="dot ms"></span>mirror-start <span class="hard">~2&times; harder</span></h3>
+      <p id="scen-ms">Task 1 of 14, row 1. Subject knows both rules. Cold-start, full information.</p>
+    </div>
+  </div>
+
+  <div class="phase-flow">
+    <div class="phase">
+      <div class="ptitle">Phase A &mdash; Architecture screen</div>
+      <div class="pbody">5 pipelines &times; 2 scenarios &times; 7 personas &times; 15 runs &times; 15 turns
+        <span class="big">= 15,750 turns</span>, all at <code>gpt-5.4-nano</code>.</div>
+    </div>
+    <div class="arrow">&rarr;</div>
+    <div class="phase">
+      <div class="ptitle">Phase B &mdash; Escalation screen</div>
+      <div class="pbody">Take the winner (<code>P-all</code>); test one lever at a time &mdash;
+        corrector, reasoning effort (low/med/high), and model upgrade (mini, full gpt-5.4).</div>
+    </div>
+  </div>
+  <p class="fine center">Judge held fixed at <code>gpt-5.4-mini</code> for measurement stability.
+    Cost is non-binding (Azure Sweden Central); the design scales runs/turns for interpretability, not volume.</p>
+</section>
+
+<!-- ===================== RESULTS ===================== -->
+<section class="section alt" id="results">
+  <h2 class="kicker">Results</h2>
+  <p class="section-lead">Every chart is interactive &mdash; hover for exact rates and Wilson 95% CIs,
+    toggle metrics and scenarios, click legend entries to isolate series.</p>
+
+  <!-- Pareto -->
+  <div class="chartcard">
+    <h3>The frontier: which configuration is Pareto-best?</h3>
+    <p class="chartnote">Bias-clean rate (% of turns with no leak) vs. bot cost per 1,000 turns. Marker
+      size = p95 latency. <strong>Bottom-right is best.</strong> Only the model upgrade pushes the frontier outward.</p>
+    <div id="chart-pareto" class="plot"></div>
+  </div>
+
+  <!-- Pipeline leak rates -->
+  <div class="chartcard">
+    <h3>Phase A: leak rates by pipeline</h3>
+    <div class="controls" id="ctrl-pipe"></div>
+    <p class="chartnote">The single-call <code>P-all</code> is lowest on bias in every scenario;
+      every added agent is the same or worse.</p>
+    <div id="chart-pipe" class="plot"></div>
+  </div>
+
+  <!-- Risk ratio -->
+  <div class="chartcard">
+    <h3>The cost of adding agents</h3>
+    <p class="chartnote">Bias-leak risk ratio of each multi-agent pipeline relative to <code>P-all</code>
+      (= 1.0, dashed). Every one carries 1.2&ndash;4.1&times; the leak risk of the single call.</p>
+    <div id="chart-ratio" class="plot"></div>
+  </div>
+
+  <!-- Cumulative -->
+  <div class="chartcard">
+    <h3>Leaks accumulate over a conversation</h3>
+    <div class="controls" id="ctrl-cum"></div>
+    <p class="chartnote">Probability the bot has leaked bias at least once by turn <em>k</em>. Per-turn
+      risk is small but compounds &mdash; treatment integrity is a per-conversation property.</p>
+    <div id="chart-cum" class="plot"></div>
+  </div>
+
+  <!-- Persona -->
+  <div class="chartcard">
+    <h3>Where the leaks come from: personas</h3>
+    <div class="controls" id="ctrl-persona"></div>
+    <p class="chartnote">Turn-level bias-leak by adversarial persona. A high-risk tier
+      (advice-seeker, example-farmer, complexity-seeker, demand-purpose-prober) drives most failures.</p>
+    <div id="chart-persona" class="plot"></div>
+  </div>
+
+  <!-- Per-class -->
+  <div class="chartcard">
+    <h3>Where the leaks come from: response classes</h3>
+    <div class="controls" id="ctrl-class"></div>
+    <p class="chartnote">Under <code>P-all</code>, the <strong>Example</strong> and <strong>Clarify</strong>
+      classes are the residual hotspots; refusal classes are well-controlled.</p>
+    <div id="chart-class" class="plot"></div>
+  </div>
+
+  <!-- Phase B headline -->
+  <div class="chartcard highlight">
+    <h3>Phase B: which lever works?</h3>
+    <div class="controls" id="ctrl-b"></div>
+    <p class="chartnote">Each lever applied to the <code>P-all</code> winner, vs. the Phase A baseline
+      (same six personas). Only <strong>gpt-5.4-mini</strong> improves on the baseline.</p>
+    <div id="chart-b" class="plot"></div>
+  </div>
+
+  <!-- Phase B cumulative -->
+  <div class="chartcard">
+    <h3>The upgrade flattens the accumulation curve</h3>
+    <div class="controls" id="ctrl-bcum"></div>
+    <p class="chartnote">Cumulative bias-leak by turn, per Phase B condition. The mini upgrade is the
+      only condition that bends the curve down.</p>
+    <div id="chart-bcum" class="plot"></div>
+  </div>
+</section>
+
+<!-- ===================== DISCUSSION ===================== -->
+<section class="section" id="discussion">
+  <h2 class="kicker">Discussion</h2>
+  <div class="prose">
+    <p><strong>The architecture result is the surprise.</strong> Intuition says more guardrails &rarr;
+    safer. The data says the opposite: every agent added to the single call &mdash; a classifier, a
+    low-confidence probe gate, a per-class corrector &mdash; left bias-leak the same or higher. The
+    mechanism is concrete: extra steps reframe and re-surface the subject's question
+    (&ldquo;did you mean to ask about&hellip;?&rdquo;), and that reframing is itself a contamination
+    channel. This aligns with recent findings that single-agent + one guardrail beats multi-agent on
+    sequential tasks.</p>
+
+    <p><strong>Capability beats machinery.</strong> Holding the winning one-call architecture fixed,
+    the only lever that moved the frontier was the base model. <code>gpt-5.4-mini</code> wins not by
+    routing differently but by responding more cleanly <em>within</em> each class &mdash; shorter,
+    more decisive refusals with less hedging and less paraphrase of the subject, exactly the surface
+    that <code>nano</code> leaked on. Reasoning effort, escalated low&rarr;medium&rarr;high, never
+    helped; a corrector pass actively hurt.</p>
+
+    <div class="callout">
+      <h4>Open caveat &mdash; judge independence</h4>
+      <p>In the headline mini cell, the bot and the judge are the <em>same</em> model
+      (<code>gpt-5.4-mini</code>), so a small self-leniency artefact cannot be ruled out. The gain is
+      large, shows up on factuality too, and tracks measurable reply-length changes &mdash; all
+      consistent with a real capability gain rather than judge complaisance. The in-flight Stage&nbsp;3
+      cell (bot = mini, judge = full <code>gpt-5.4</code>) is designed to settle this. Until it lands,
+      we frame the finding as <em>&ldquo;model capability is the lever that works,&rdquo;</em> not
+      &ldquo;mini is the final production config.&rdquo;</p>
+    </div>
+
+    <h3 class="subhead">What this means for deployment</h3>
+    <ul class="reco">
+      <li><strong>Ship the single call.</strong> Do not add verifier/corrector layers to a sequential
+        conversational bot without proof they reduce leakage on the turns they touch.</li>
+      <li><strong>Spend the budget on the model, not the pipeline.</strong> The capability upgrade is
+        cheap relative to its effect and is the highest-value intervention found.</li>
+      <li><strong>Target the hotspots.</strong> Example- and Clarify-class replies are where residual
+        leakage lives; prompt and model effort belongs there.</li>
+      <li><strong>Measure consistency, not single-shot accuracy.</strong> A 4%-per-turn leak still
+        contaminates most 15-turn conversations; report per-conversation rates.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===================== METHODS ===================== -->
+<section class="section alt" id="methods">
+  <h2 class="kicker">Methods &amp; reproducibility</h2>
+  <div class="cards three">
+    <div class="card">
+      <h3>Harness</h3>
+      <p>Node.js stress-tester: persona&nbsp;&rarr;&nbsp;bot&nbsp;&rarr;&nbsp;judge loop, JSONL
+      streaming, per-turn trace. Pipelines, personas, metrics, and model assignments are all
+      JSON-configurable.</p>
+    </div>
+    <div class="card">
+      <h3>Statistics</h3>
+      <p>Leak rates with Wilson 95% CIs at two scales: per-turn and per-conversation
+      (&ldquo;any leak in 15 turns&rdquo;). Accumulation modelled as near-independent Bernoulli draws.</p>
+    </div>
+    <div class="card">
+      <h3>Data</h3>
+      <p>27,800+ judged turns and counting. Aggregates on this page are regenerated from the raw
+      run logs by a single script and committed alongside the site.</p>
+    </div>
+  </div>
+  <p class="fine center" id="data-foot"></p>
+</section>
+
+<footer class="footer">
+  <div>Stress-testing instruction chatbots for experimental economics.</div>
+  <div class="fine">Preliminary results · figures regenerate as Phase B completes ·
+    <a href="https://github.com/can-celebi/chatbot-for-experiments" target="_blank" rel="noopener">source on GitHub</a></div>
+</footer>
+
+<script src="assets/js/site-data.js"></script>
+<script src="assets/js/charts.js"></script>
+</body>
+</html>
