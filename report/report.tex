@@ -19,35 +19,30 @@
 \end{center}
 \vspace{0.6em}
 
-Language models are increasingly proposed to replace the human assistants who answer participants'
-questions during economics experiments, where the assistant must explain a task's rules while
-withholding anything that could influence the decisions under study; the reliability question is
-therefore not whether a model is helpful but how dependably it can be confined to a prescribed role
-across an adversarial, multi-turn exchange. We study this in Oprea's (2024) experiments on
-decision-making under risk, whose interpretation turns on distinguishing a participant's
-\emph{comprehension} of a lottery from the \emph{complexity} of evaluating it: an assistant there must
-reduce comprehension costs---restating rules, defining terms---without reducing complexity costs, and so
-may not give advice, compute or hint at expected values or dominance, simplify the task, signal the
-experimenter's intent, or reveal other treatments. We implement a chatbot bound by these constraints
-and ask how reliably the constraint holds as a function of system design. Without human participants, we
-generate adversarial synthetic subjects---seven participant types, each engineered to press a distinct
-failure vector---and have each conduct fifteen fifteen-turn dialogues under two experimental contexts,
-the second materially harder; every response is routed into one of six communicative categories and
-scored by an independent model judge for violation of the no-advice constraint, factual inconsistency,
-and incoherence. Across this procedure we compare five architectures, from a single constrained call to
-multi-agent configurations adding classification, low-confidence gating, and post-hoc correction, and,
-holding the best fixed, vary the base model's capability and reasoning effort---more than twenty-seven
-thousand scored responses. Architectural elaboration does not improve reliability: the single call is
-undominated on adherence, cost, and latency, and every added agent matches or worsens the violation rate
-by restating and thereby re-exposing the prohibited request. Holding architecture fixed, only greater
-base-model capability improves adherence, cutting violations by roughly forty-six and sixty-eight percent
-across the two contexts at negligible cost, whereas additional reasoning effort yields nothing and an
-explicit correction stage is harmful; because small per-response violation probabilities compound over a
-dialogue, we assess reliability per conversation rather than per turn. These findings are
-preliminary---a confirmatory condition fully separating the evaluated and evaluating models is still in
-progress---but already indicate that, for a chatbot held to a narrowly prescribed role, the capability
-of the base model rather than the elaborateness of the surrounding workflow is the binding determinant
-of reliability. Full methods and interactive results:
+In many economics experiments a research assistant answers participants' questions about the task. The
+assistant must explain the rules, but must never give advice or hint at the best choice---that would
+change the very behavior being studied. We ask a simple question: can a language-model chatbot be
+trusted to stay inside this role, and what makes it reliable? We build such a chatbot for Oprea's (2024)
+experiments on choice under risk, where the central debate is about separating what participants
+\emph{understand} from how \emph{complex} the task is to think through. Our chatbot is therefore allowed
+to clarify the rules, but is forbidden to give advice, work out the best option, or make the task look
+simpler than it is. To test it without human participants, we let adversarial ``synthetic
+subjects''---language models playing seven kinds of difficult participant---try to pull the chatbot out
+of its role over many 15-turn conversations, more than 27,000 replies in total. An independent model
+then judges every reply: did it break the no-advice rule, say something false, or fail to make sense?
+Using this setup we compare different chatbot designs.
+
+\medskip
+The main result is clear. A \emph{simpler} design is safer: a single, well-instructed model call is the
+most reliable, and every extra ``guardrail'' agent we add makes things worse, not better, because the
+added steps tend to repeat the participant's forbidden question back to them. The one change that helps
+is a \emph{stronger base model}: it cut rule-breaking replies from about 12\% to 4\% on the hardest
+test, while also being more accurate and faster. Adding reasoning steps or a correction pass did not
+help. We measure reliability over a whole conversation, not a single reply, because small per-reply
+risks add up: even a chatbot that slips only 4\% of the time will slip at least once in most 15-turn
+conversations. These results are still preliminary, but the lesson is already clear---for a chatbot that
+must stay in a strict role, the quality of the base model matters far more than how elaborate the
+surrounding workflow is. Full methods and interactive results:
 \href{https://can-celebi.github.io/chatbot-for-experiments/}{\texttt{can-celebi.github.io/chatbot-for-experiments}}.
 
 \end{document}

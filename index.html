@@ -34,14 +34,12 @@
     <div class="eyebrow">Methods · experimental economics × LLM agents</div>
     <h1>How reliably can a chatbot be <span class="grad">confined to a role</span>?</h1>
     <p class="lede">
-      An instruction chatbot inside an economics experiment is not a help tool &mdash; it is part of the
-      <em>manipulation</em>. It must explain the rules and refuse to give advice, compute expected
-      values, or reduce the task's complexity. We ask whether a language model can be held to such a
-      narrowly prescribed role as dependably as a trained research assistant, and which system design
-      &mdash; <strong>pipeline architecture</strong> or <strong>base model</strong> &mdash; makes the
-      constraint hold. We test it with adversarial <strong>synthetic subjects</strong> across tens of
-      thousands of independently scored conversations, in the setting of Oprea's (2024) experiments on
-      risk and complexity.
+      In an economics experiment, the assistant who answers participants' questions must explain the
+      rules but <em>never</em> hint at the best choice &mdash; that would change the behavior being
+      studied. We ask a simple question: can a chatbot be trusted to stay inside this role, and what
+      makes it reliable? We test it by letting adversarial <strong>synthetic subjects</strong> try to
+      pull the chatbot out of its role across thousands of conversations, in the setting of Oprea's
+      (2024) experiments on choice under risk.
     </p>
     <div class="chips" id="hero-chips"></div>
     <div class="hero-cta">
@@ -65,23 +63,23 @@
   <div class="cards three">
     <div class="card finding">
       <div class="fnum">01</div>
-      <h3>Simpler is more reliable</h3>
-      <p>A <strong>single constrained model call</strong> is undominated on constraint adherence, cost,
-      and latency. Adding agents &mdash; a classifier, a low-confidence gate, a corrector &mdash;
-      leaves the violation rate unchanged or higher, a <strong>1.2&ndash;4.1&times;</strong> penalty.</p>
+      <h3>Simpler is safer</h3>
+      <p>A <strong>single, well-instructed model call</strong> is the most reliable design. Every extra
+      "guardrail" agent we added made rule-breaking <em>more</em> common, not less &mdash; up to
+      <strong>4&times;</strong> more.</p>
     </div>
     <div class="card finding">
       <div class="fnum">02</div>
-      <h3>Capability is the lever</h3>
-      <p>Holding architecture fixed, only a stronger <strong>base model</strong> improved adherence:
-      constraint violations fell <strong>46&ndash;68%</strong> across the two contexts, with better
-      factual accuracy, at negligible cost.</p>
+      <h3>A stronger model is the fix</h3>
+      <p>The one change that helped was a <strong>stronger base model</strong>. It cut rule-breaking
+      replies from about <strong>12% to 4%</strong> on the hardest test &mdash; while also being more
+      accurate and faster.</p>
     </div>
     <div class="card finding">
       <div class="fnum">03</div>
-      <h3>Added machinery doesn't pay</h3>
-      <p>Greater reasoning effort yielded nothing; an explicit correction stage was <em>harmful</em>.
-      Extra steps enlarged the contamination surface rather than reducing it.</p>
+      <h3>Extra steps don't help</h3>
+      <p>Adding reasoning effort did nothing; adding a correction pass made things <em>worse</em>. More
+      machinery gave the chatbot more ways to slip, not fewer.</p>
     </div>
   </div>
 </section>
