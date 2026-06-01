@@ -1,13 +1,13 @@
 {
   "meta": {
-    "generatedAt": "2026-06-01 17:03 CEST",
+    "generatedAt": "2026-06-01 17:21 CEST",
     "preliminary": true,
     "scenarios": ["random-mid", "mirror-start"],
     "pipelines": ["P-all", "P2", "P2-probe", "P-perclass", "P-probe-perclass"],
     "personas": ["advice-seeker", "complexity-seeker", "confused-inquirer", "demand-purpose-prober", "example-farmer", "frustration-spiral", "jailbreaker"],
     "classLabels": ["Deny", "AdviceReflect", "Clarify", "Complex", "Example", "Meta"],
     "phaseA_turns": 15750,
-    "phaseB_turns": 12061,
+    "phaseB_turns": 13411,
     "phaseB_stages": ["phase-b-stage1-1780305768", "phase-b-stage2-nano-reasoning-1780319310"],
     "scenarioDesc": {
       "random-mid": "Task 7 of 14, row 12. Subject knows only the Random Box rule. Mid-experience, partial information.",
@@ -3959,41 +3959,11 @@
     ]
   },
   "phaseB": {
-    "conditions": ["A — P-all (nano)", "P-all + corrector (nano)", "Reasoning low (nano)", "Reasoning medium (nano)", "Reasoning high (nano)", "gpt-5.4-mini"],
+    "conditions": ["Baseline (single call)", "+ corrector", "Reasoning: low", "Reasoning: medium", "Reasoning: high", "Higher-capability model"],
     "byCondition": [
       {
         "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "metric": "bias",
-        "level": "turn",
-        "p": 0.1319,
-        "lo": 0.1148,
-        "hi": 0.1509,
-        "n": 1350
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "metric": "fact",
-        "level": "turn",
-        "p": 0.0993,
-        "lo": 0.0844,
-        "hi": 0.1164,
-        "n": 1350
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "metric": "coherence",
-        "level": "turn",
-        "p": 0.0111,
-        "lo": 0.0067,
-        "hi": 0.0183,
-        "n": 1350
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "bias",
         "level": "turn",
         "p": 0.1828,
@@ -4003,7 +3973,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "fact",
         "level": "turn",
         "p": 0.0807,
@@ -4013,7 +3983,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "coherence",
         "level": "turn",
         "p": 0.0202,
@@ -4023,67 +3993,37 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "bias",
         "level": "turn",
-        "p": 0.1267,
-        "lo": 0.1099,
-        "hi": 0.1455,
-        "n": 1342
+        "p": 0.1319,
+        "lo": 0.1148,
+        "hi": 0.1509,
+        "n": 1350
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "fact",
         "level": "turn",
-        "p": 0.0984,
-        "lo": 0.0836,
-        "hi": 0.1155,
-        "n": 1341
+        "p": 0.0993,
+        "lo": 0.0844,
+        "hi": 0.1164,
+        "n": 1350
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "coherence",
         "level": "turn",
-        "p": 0.0216,
-        "lo": 0.0151,
-        "hi": 0.0309,
-        "n": 1341
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "metric": "bias",
-        "level": "turn",
-        "p": 0.1444,
-        "lo": 0.1267,
-        "hi": 0.1642,
+        "p": 0.0111,
+        "lo": 0.0067,
+        "hi": 0.0183,
         "n": 1350
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "metric": "fact",
-        "level": "turn",
-        "p": 0.1052,
-        "lo": 0.0899,
-        "hi": 0.1227,
-        "n": 1350
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "metric": "coherence",
-        "level": "turn",
-        "p": 0.0311,
-        "lo": 0.0231,
-        "hi": 0.0418,
-        "n": 1350
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "bias",
         "level": "turn",
         "p": 0.04,
@@ -4093,7 +4033,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "fact",
         "level": "turn",
         "p": 0.0349,
@@ -4103,7 +4043,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "coherence",
         "level": "turn",
         "p": 0.0245,
@@ -4112,38 +4052,98 @@
         "n": 1347
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "metric": "bias",
         "level": "turn",
-        "p": 0.0496,
-        "lo": 0.0393,
-        "hi": 0.0625,
+        "p": 0.1474,
+        "lo": 0.1295,
+        "hi": 0.1673,
         "n": 1350
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "metric": "fact",
         "level": "turn",
-        "p": 0.037,
-        "lo": 0.0282,
-        "hi": 0.0485,
+        "p": 0.1119,
+        "lo": 0.0961,
+        "hi": 0.1298,
         "n": 1350
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "metric": "coherence",
         "level": "turn",
-        "p": 0.0059,
-        "lo": 0.003,
-        "hi": 0.0116,
+        "p": 0.0252,
+        "lo": 0.0181,
+        "hi": 0.035,
+        "n": 1350
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "metric": "bias",
+        "level": "turn",
+        "p": 0.1267,
+        "lo": 0.1099,
+        "hi": 0.1455,
+        "n": 1342
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "metric": "fact",
+        "level": "turn",
+        "p": 0.0984,
+        "lo": 0.0836,
+        "hi": 0.1155,
+        "n": 1341
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "metric": "coherence",
+        "level": "turn",
+        "p": 0.0216,
+        "lo": 0.0151,
+        "hi": 0.0309,
+        "n": 1341
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "metric": "bias",
+        "level": "turn",
+        "p": 0.1444,
+        "lo": 0.1267,
+        "hi": 0.1642,
+        "n": 1350
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "metric": "fact",
+        "level": "turn",
+        "p": 0.1052,
+        "lo": 0.0899,
+        "hi": 0.1227,
+        "n": 1350
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "metric": "coherence",
+        "level": "turn",
+        "p": 0.0311,
+        "lo": 0.0231,
+        "hi": 0.0418,
         "n": 1350
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "bias",
         "level": "turn",
         "p": 0.1061,
@@ -4153,7 +4153,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "fact",
         "level": "turn",
         "p": 0.059,
@@ -4163,7 +4163,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "coherence",
         "level": "turn",
         "p": 0.0157,
@@ -4173,57 +4173,27 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
+        "label": "Baseline (single call)",
         "metric": "bias",
         "level": "turn",
-        "p": 0.062,
-        "lo": 0.0501,
-        "hi": 0.0764,
-        "n": 1307
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "metric": "fact",
-        "level": "turn",
-        "p": 0.0544,
-        "lo": 0.0433,
-        "hi": 0.068,
-        "n": 1306
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "metric": "coherence",
-        "level": "turn",
-        "p": 0.0237,
-        "lo": 0.0168,
-        "hi": 0.0335,
-        "n": 1307
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "metric": "bias",
-        "level": "turn",
-        "p": 0.0511,
-        "lo": 0.0406,
-        "hi": 0.0642,
+        "p": 0.0496,
+        "lo": 0.0393,
+        "hi": 0.0625,
         "n": 1350
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "fact",
         "level": "turn",
-        "p": 0.0511,
-        "lo": 0.0406,
-        "hi": 0.0642,
+        "p": 0.037,
+        "lo": 0.0282,
+        "hi": 0.0485,
         "n": 1350
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "coherence",
         "level": "turn",
         "p": 0.0059,
@@ -4233,37 +4203,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
-        "metric": "bias",
-        "level": "turn",
-        "p": 0.0583,
-        "lo": 0.047,
-        "hi": 0.0722,
-        "n": 1337
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
-        "metric": "fact",
-        "level": "turn",
-        "p": 0.0615,
-        "lo": 0.0498,
-        "hi": 0.0757,
-        "n": 1334
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
-        "metric": "coherence",
-        "level": "turn",
-        "p": 0.0187,
-        "lo": 0.0127,
-        "hi": 0.0275,
-        "n": 1336
-      },
-      {
-        "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "bias",
         "level": "turn",
         "p": 0.0245,
@@ -4273,7 +4213,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "fact",
         "level": "turn",
         "p": 0.0237,
@@ -4283,7 +4223,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "coherence",
         "level": "turn",
         "p": 0.0178,
@@ -4292,38 +4232,98 @@
         "n": 1347
       },
       {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
         "metric": "bias",
-        "level": "run",
-        "p": 0.7889,
-        "lo": 0.6937,
-        "hi": 0.8605,
-        "n": 90
+        "level": "turn",
+        "p": 0.062,
+        "lo": 0.0501,
+        "hi": 0.0764,
+        "n": 1307
       },
       {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
         "metric": "fact",
-        "level": "run",
-        "p": 0.7111,
-        "lo": 0.6104,
-        "hi": 0.7946,
-        "n": 90
+        "level": "turn",
+        "p": 0.0544,
+        "lo": 0.0433,
+        "hi": 0.068,
+        "n": 1306
       },
       {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
         "metric": "coherence",
-        "level": "run",
-        "p": 0.1556,
-        "lo": 0.095,
-        "hi": 0.2443,
-        "n": 90
+        "level": "turn",
+        "p": 0.0237,
+        "lo": 0.0168,
+        "hi": 0.0335,
+        "n": 1307
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "metric": "bias",
+        "level": "turn",
+        "p": 0.0511,
+        "lo": 0.0406,
+        "hi": 0.0642,
+        "n": 1350
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "metric": "fact",
+        "level": "turn",
+        "p": 0.0511,
+        "lo": 0.0406,
+        "hi": 0.0642,
+        "n": 1350
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "metric": "coherence",
+        "level": "turn",
+        "p": 0.0059,
+        "lo": 0.003,
+        "hi": 0.0116,
+        "n": 1350
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "metric": "bias",
+        "level": "turn",
+        "p": 0.0583,
+        "lo": 0.047,
+        "hi": 0.0722,
+        "n": 1337
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "metric": "fact",
+        "level": "turn",
+        "p": 0.0615,
+        "lo": 0.0498,
+        "hi": 0.0757,
+        "n": 1334
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "metric": "coherence",
+        "level": "turn",
+        "p": 0.0187,
+        "lo": 0.0127,
+        "hi": 0.0275,
+        "n": 1336
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "bias",
         "level": "run",
         "p": 0.9111,
@@ -4333,7 +4333,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "fact",
         "level": "run",
         "p": 0.5778,
@@ -4343,7 +4343,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "coherence",
         "level": "run",
         "p": 0.2386,
@@ -4353,67 +4353,37 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "bias",
         "level": "run",
-        "p": 0.8889,
-        "lo": 0.8074,
-        "hi": 0.9385,
+        "p": 0.7889,
+        "lo": 0.6937,
+        "hi": 0.8605,
         "n": 90
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "fact",
         "level": "run",
-        "p": 0.6517,
-        "lo": 0.5483,
-        "hi": 0.7425,
-        "n": 89
+        "p": 0.7111,
+        "lo": 0.6104,
+        "hi": 0.7946,
+        "n": 90
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "coherence",
         "level": "run",
-        "p": 0.2697,
-        "lo": 0.1884,
-        "hi": 0.37,
-        "n": 89
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "metric": "bias",
-        "level": "run",
-        "p": 0.9111,
-        "lo": 0.8343,
-        "hi": 0.9543,
+        "p": 0.1556,
+        "lo": 0.095,
+        "hi": 0.2443,
         "n": 90
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "metric": "fact",
-        "level": "run",
-        "p": 0.6778,
-        "lo": 0.5757,
-        "hi": 0.7653,
-        "n": 90
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "metric": "coherence",
-        "level": "run",
-        "p": 0.3333,
-        "lo": 0.2445,
-        "hi": 0.4358,
-        "n": 90
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "bias",
         "level": "run",
         "p": 0.4667,
@@ -4423,7 +4393,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "fact",
         "level": "run",
         "p": 0.3258,
@@ -4433,7 +4403,7 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "coherence",
         "level": "run",
         "p": 0.2841,
@@ -4442,38 +4412,98 @@
         "n": 88
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "metric": "bias",
         "level": "run",
-        "p": 0.4778,
-        "lo": 0.3776,
-        "hi": 0.5798,
+        "p": 0.8778,
+        "lo": 0.7943,
+        "hi": 0.9304,
         "n": 90
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "metric": "fact",
         "level": "run",
-        "p": 0.3222,
-        "lo": 0.2347,
-        "hi": 0.4243,
+        "p": 0.7556,
+        "lo": 0.6575,
+        "hi": 0.8327,
         "n": 90
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "metric": "coherence",
         "level": "run",
-        "p": 0.0889,
-        "lo": 0.0457,
-        "hi": 0.1657,
+        "p": 0.2667,
+        "lo": 0.1862,
+        "hi": 0.3662,
+        "n": 90
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "metric": "bias",
+        "level": "run",
+        "p": 0.8889,
+        "lo": 0.8074,
+        "hi": 0.9385,
+        "n": 90
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "metric": "fact",
+        "level": "run",
+        "p": 0.6517,
+        "lo": 0.5483,
+        "hi": 0.7425,
+        "n": 89
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "metric": "coherence",
+        "level": "run",
+        "p": 0.2697,
+        "lo": 0.1884,
+        "hi": 0.37,
+        "n": 89
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "metric": "bias",
+        "level": "run",
+        "p": 0.9111,
+        "lo": 0.8343,
+        "hi": 0.9543,
+        "n": 90
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "metric": "fact",
+        "level": "run",
+        "p": 0.6778,
+        "lo": 0.5757,
+        "hi": 0.7653,
+        "n": 90
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "metric": "coherence",
+        "level": "run",
+        "p": 0.3333,
+        "lo": 0.2445,
+        "hi": 0.4358,
         "n": 90
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "bias",
         "level": "run",
         "p": 0.7333,
@@ -4483,7 +4513,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "fact",
         "level": "run",
         "p": 0.5556,
@@ -4493,7 +4523,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "metric": "coherence",
         "level": "run",
         "p": 0.2,
@@ -4503,57 +4533,27 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
+        "label": "Baseline (single call)",
         "metric": "bias",
         "level": "run",
-        "p": 0.5281,
-        "lo": 0.4254,
-        "hi": 0.6285,
-        "n": 89
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "metric": "fact",
-        "level": "run",
-        "p": 0.4091,
-        "lo": 0.3123,
-        "hi": 0.5135,
-        "n": 88
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "metric": "coherence",
-        "level": "run",
-        "p": 0.2135,
-        "lo": 0.1411,
-        "hi": 0.3095,
-        "n": 89
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "metric": "bias",
-        "level": "run",
-        "p": 0.5333,
-        "lo": 0.431,
-        "hi": 0.6329,
+        "p": 0.4778,
+        "lo": 0.3776,
+        "hi": 0.5798,
         "n": 90
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "fact",
         "level": "run",
-        "p": 0.4333,
-        "lo": 0.3358,
-        "hi": 0.5364,
+        "p": 0.3222,
+        "lo": 0.2347,
+        "hi": 0.4243,
         "n": 90
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "metric": "coherence",
         "level": "run",
         "p": 0.0889,
@@ -4563,37 +4563,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
-        "metric": "bias",
-        "level": "run",
-        "p": 0.5333,
-        "lo": 0.431,
-        "hi": 0.6329,
-        "n": 90
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
-        "metric": "fact",
-        "level": "run",
-        "p": 0.5222,
-        "lo": 0.4202,
-        "hi": 0.6224,
-        "n": 90
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
-        "metric": "coherence",
-        "level": "run",
-        "p": 0.236,
-        "lo": 0.1598,
-        "hi": 0.3339,
-        "n": 89
-      },
-      {
-        "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "bias",
         "level": "run",
         "p": 0.2778,
@@ -4603,7 +4573,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "fact",
         "level": "run",
         "p": 0.3,
@@ -4613,1011 +4583,1191 @@
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "metric": "coherence",
         "level": "run",
         "p": 0.1573,
         "lo": 0.0961,
         "hi": 0.2469,
         "n": 89
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "metric": "bias",
+        "level": "run",
+        "p": 0.5281,
+        "lo": 0.4254,
+        "hi": 0.6285,
+        "n": 89
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "metric": "fact",
+        "level": "run",
+        "p": 0.4091,
+        "lo": 0.3123,
+        "hi": 0.5135,
+        "n": 88
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "metric": "coherence",
+        "level": "run",
+        "p": 0.2135,
+        "lo": 0.1411,
+        "hi": 0.3095,
+        "n": 89
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "metric": "bias",
+        "level": "run",
+        "p": 0.5333,
+        "lo": 0.431,
+        "hi": 0.6329,
+        "n": 90
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "metric": "fact",
+        "level": "run",
+        "p": 0.4333,
+        "lo": 0.3358,
+        "hi": 0.5364,
+        "n": 90
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "metric": "coherence",
+        "level": "run",
+        "p": 0.0889,
+        "lo": 0.0457,
+        "hi": 0.1657,
+        "n": 90
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "metric": "bias",
+        "level": "run",
+        "p": 0.5333,
+        "lo": 0.431,
+        "hi": 0.6329,
+        "n": 90
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "metric": "fact",
+        "level": "run",
+        "p": 0.5222,
+        "lo": 0.4202,
+        "hi": 0.6224,
+        "n": 90
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "metric": "coherence",
+        "level": "run",
+        "p": 0.236,
+        "lo": 0.1598,
+        "hi": 0.3339,
+        "n": 89
       }
     ],
     "cumulative": [
       {
         "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 1,
-        "p": 0.3111
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 2,
-        "p": 0.3667
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 3,
-        "p": 0.4333
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 4,
-        "p": 0.4889
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 5,
-        "p": 0.5444
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 6,
-        "p": 0.5778
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 7,
-        "p": 0.6222
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 8,
-        "p": 0.6778
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 9,
-        "p": 0.7222
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 10,
-        "p": 0.7222
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 11,
-        "p": 0.7333
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 12,
-        "p": 0.7444
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 13,
-        "p": 0.7667
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 14,
-        "p": 0.7778
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "A — P-all (nano)",
-        "turn": 15,
-        "p": 0.7889
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 1,
         "p": 0.3222
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 2,
         "p": 0.4944
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 3,
         "p": 0.5618
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 4,
         "p": 0.6333
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 5,
         "p": 0.7111
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 6,
         "p": 0.7778
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 7,
         "p": 0.8427
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 8,
         "p": 0.8444
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 9,
         "p": 0.8523
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 10,
         "p": 0.8556
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 11,
         "p": 0.8989
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 12,
         "p": 0.9
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 13,
         "p": 0.8989
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 14,
         "p": 0.8989
       },
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 15,
         "p": 0.9205
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 1,
-        "p": 0.3
+        "p": 0.3111
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 2,
-        "p": 0.3556
+        "p": 0.3667
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 3,
-        "p": 0.3778
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
-        "turn": 4,
         "p": 0.4333
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
+        "turn": 4,
+        "p": 0.4889
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Baseline (single call)",
         "turn": 5,
-        "p": 0.5
+        "p": 0.5444
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 6,
-        "p": 0.5556
+        "p": 0.5778
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 7,
         "p": 0.6222
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 8,
-        "p": 0.6667
+        "p": 0.6778
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 9,
-        "p": 0.7
+        "p": 0.7222
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 10,
         "p": 0.7222
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Baseline (single call)",
         "turn": 11,
-        "p": 0.764
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
-        "turn": 12,
-        "p": 0.7978
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
-        "turn": 13,
-        "p": 0.8068
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
-        "turn": 14,
-        "p": 0.8523
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
-        "turn": 15,
-        "p": 0.8864
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 1,
-        "p": 0.2556
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 2,
-        "p": 0.3333
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 3,
-        "p": 0.4222
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 4,
-        "p": 0.5111
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 5,
-        "p": 0.5778
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 6,
-        "p": 0.6667
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 7,
-        "p": 0.7
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 8,
         "p": 0.7333
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 9,
+        "label": "Baseline (single call)",
+        "turn": 12,
         "p": 0.7444
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 10,
-        "p": 0.8
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 11,
-        "p": 0.8222
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
-        "turn": 12,
-        "p": 0.8444
-      },
-      {
-        "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 13,
-        "p": 0.8556
+        "p": 0.7667
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 14,
-        "p": 0.8778
+        "p": 0.7778
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 15,
-        "p": 0.9111
+        "p": 0.7889
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 1,
         "p": 0.0556
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 2,
         "p": 0.0674
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 3,
         "p": 0.1444
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 4,
         "p": 0.1889
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 5,
         "p": 0.2333
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 6,
         "p": 0.2444
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 7,
         "p": 0.2889
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 8,
         "p": 0.3111
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 9,
         "p": 0.3444
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 10,
         "p": 0.3667
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 11,
         "p": 0.3778
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 12,
         "p": 0.4
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 13,
         "p": 0.4444
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 14,
         "p": 0.4444
       },
       {
         "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 15,
         "p": 0.4667
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
         "turn": 1,
-        "p": 0.0333
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 2,
-        "p": 0.1222
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 3,
-        "p": 0.1333
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 4,
-        "p": 0.2111
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 5,
-        "p": 0.2778
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 6,
         "p": 0.3222
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 7,
-        "p": 0.3333
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 8,
-        "p": 0.3333
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 9,
-        "p": 0.3444
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 10,
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 2,
         "p": 0.3667
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 11,
-        "p": 0.3778
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 12,
-        "p": 0.4111
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 13,
-        "p": 0.4444
-      },
-      {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 14,
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 3,
         "p": 0.4556
       },
       {
-        "scenario": "random-mid",
-        "label": "A — P-all (nano)",
-        "turn": 15,
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 4,
         "p": 0.4778
       },
       {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 5,
+        "p": 0.5556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 6,
+        "p": 0.6111
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 7,
+        "p": 0.6556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 8,
+        "p": 0.7222
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 9,
+        "p": 0.7444
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 10,
+        "p": 0.7667
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 11,
+        "p": 0.7778
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 12,
+        "p": 0.8222
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 13,
+        "p": 0.8556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 14,
+        "p": 0.8667
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "turn": 15,
+        "p": 0.8778
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 1,
+        "p": 0.3
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 2,
+        "p": 0.3556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 3,
+        "p": 0.3778
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 4,
+        "p": 0.4333
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 5,
+        "p": 0.5
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 6,
+        "p": 0.5556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 7,
+        "p": 0.6222
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 8,
+        "p": 0.6667
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 9,
+        "p": 0.7
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 10,
+        "p": 0.7222
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 11,
+        "p": 0.764
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 12,
+        "p": 0.7978
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 13,
+        "p": 0.8068
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 14,
+        "p": 0.8523
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
+        "turn": 15,
+        "p": 0.8864
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 1,
+        "p": 0.2556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 2,
+        "p": 0.3333
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 3,
+        "p": 0.4222
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 4,
+        "p": 0.5111
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 5,
+        "p": 0.5778
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 6,
+        "p": 0.6667
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 7,
+        "p": 0.7
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 8,
+        "p": 0.7333
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 9,
+        "p": 0.7444
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 10,
+        "p": 0.8
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 11,
+        "p": 0.8222
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 12,
+        "p": 0.8444
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 13,
+        "p": 0.8556
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 14,
+        "p": 0.8778
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: medium",
+        "turn": 15,
+        "p": 0.9111
+      },
+      {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 1,
         "p": 0.1889
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 2,
         "p": 0.2247
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 3,
         "p": 0.3182
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 4,
         "p": 0.3778
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 5,
         "p": 0.4607
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 6,
         "p": 0.4719
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 7,
         "p": 0.5618
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 8,
         "p": 0.5795
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 9,
         "p": 0.5889
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 10,
         "p": 0.6222
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 11,
         "p": 0.6404
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 12,
         "p": 0.6629
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 13,
         "p": 0.6889
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 14,
         "p": 0.7045
       },
       {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "turn": 15,
         "p": 0.7333
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 1,
-        "p": 0.0899
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 2,
-        "p": 0.1136
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 3,
-        "p": 0.2045
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 4,
-        "p": 0.2386
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 5,
-        "p": 0.2955
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 6,
-        "p": 0.3068
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 7,
-        "p": 0.3977
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 8,
-        "p": 0.4138
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 9,
-        "p": 0.4368
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 10,
-        "p": 0.4419
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 11,
-        "p": 0.4535
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 12,
-        "p": 0.4767
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 13,
-        "p": 0.4767
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 14,
-        "p": 0.5
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
-        "turn": 15,
-        "p": 0.5233
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 1,
-        "p": 0.0444
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 2,
-        "p": 0.1
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 3,
-        "p": 0.1444
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 4,
-        "p": 0.1778
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 5,
-        "p": 0.2444
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 6,
-        "p": 0.2667
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 7,
-        "p": 0.2889
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 8,
-        "p": 0.3111
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 9,
-        "p": 0.3333
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 10,
-        "p": 0.3556
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 11,
-        "p": 0.3778
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 12,
-        "p": 0.4556
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 13,
-        "p": 0.4889
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 14,
-        "p": 0.5
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
-        "turn": 15,
-        "p": 0.5333
-      },
-      {
-        "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 1,
         "p": 0.0333
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 2,
-        "p": 0.1
+        "p": 0.1222
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 3,
         "p": 0.1333
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 4,
-        "p": 0.2
+        "p": 0.2111
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 5,
-        "p": 0.2273
+        "p": 0.2778
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 6,
-        "p": 0.3068
+        "p": 0.3222
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 7,
-        "p": 0.3933
+        "p": 0.3333
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 8,
-        "p": 0.4157
+        "p": 0.3333
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 9,
-        "p": 0.4382
+        "p": 0.3444
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 10,
-        "p": 0.4382
+        "p": 0.3667
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 11,
-        "p": 0.4719
+        "p": 0.3778
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 12,
-        "p": 0.4831
+        "p": 0.4111
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 13,
-        "p": 0.4944
+        "p": 0.4444
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 14,
-        "p": 0.5056
+        "p": 0.4556
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Baseline (single call)",
         "turn": 15,
-        "p": 0.5393
+        "p": 0.4778
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 1,
         "p": 0
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 2,
         "p": 0.0111
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 3,
         "p": 0.0222
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 4,
         "p": 0.0778
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 5,
         "p": 0.0778
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 6,
         "p": 0.0889
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 7,
         "p": 0.1222
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 8,
         "p": 0.1444
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 9,
         "p": 0.1556
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 10,
         "p": 0.2
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 11,
         "p": 0.2333
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 12,
         "p": 0.2444
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 13,
         "p": 0.2667
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 14,
         "p": 0.2667
       },
       {
         "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
+        "label": "Higher-capability model",
         "turn": 15,
         "p": 0.2809
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 1,
+        "p": 0.0899
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 2,
+        "p": 0.1136
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 3,
+        "p": 0.2045
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 4,
+        "p": 0.2386
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 5,
+        "p": 0.2955
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 6,
+        "p": 0.3068
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 7,
+        "p": 0.3977
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 8,
+        "p": 0.4138
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 9,
+        "p": 0.4368
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 10,
+        "p": 0.4419
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 11,
+        "p": 0.4535
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 12,
+        "p": 0.4767
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 13,
+        "p": 0.4767
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 14,
+        "p": 0.5
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
+        "turn": 15,
+        "p": 0.5233
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 1,
+        "p": 0.0444
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 2,
+        "p": 0.1
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 3,
+        "p": 0.1444
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 4,
+        "p": 0.1778
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 5,
+        "p": 0.2444
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 6,
+        "p": 0.2667
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 7,
+        "p": 0.2889
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 8,
+        "p": 0.3111
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 9,
+        "p": 0.3333
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 10,
+        "p": 0.3556
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 11,
+        "p": 0.3778
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 12,
+        "p": 0.4556
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 13,
+        "p": 0.4889
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 14,
+        "p": 0.5
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: low",
+        "turn": 15,
+        "p": 0.5333
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 1,
+        "p": 0.0333
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 2,
+        "p": 0.1
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 3,
+        "p": 0.1333
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 4,
+        "p": 0.2
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 5,
+        "p": 0.2273
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 6,
+        "p": 0.3068
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 7,
+        "p": 0.3933
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 8,
+        "p": 0.4157
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 9,
+        "p": 0.4382
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 10,
+        "p": 0.4382
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 11,
+        "p": 0.4719
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 12,
+        "p": 0.4831
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 13,
+        "p": 0.4944
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 14,
+        "p": 0.5056
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: medium",
+        "turn": 15,
+        "p": 0.5393
       }
     ],
     "pareto": [
       {
         "scenario": "mirror-start",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "group": "Phase B",
         "bias_perf": 81.7164,
         "cost_per_k": 0.7371,
@@ -5625,7 +5775,23 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning low (nano)",
+        "label": "Higher-capability model",
+        "group": "Phase B",
+        "bias_perf": 95.997,
+        "cost_per_k": 2.6175,
+        "p95_latency_s": 2.4306
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: high",
+        "group": "Phase B",
+        "bias_perf": 85.2593,
+        "cost_per_k": 1.0214,
+        "p95_latency_s": 10.6722
+      },
+      {
+        "scenario": "mirror-start",
+        "label": "Reasoning: low",
         "group": "Phase B",
         "bias_perf": 87.3323,
         "cost_per_k": 0.7971,
@@ -5633,23 +5799,15 @@
       },
       {
         "scenario": "mirror-start",
-        "label": "Reasoning medium (nano)",
+        "label": "Reasoning: medium",
         "group": "Phase B",
         "bias_perf": 85.5556,
         "cost_per_k": 0.9196,
         "p95_latency_s": 8.8725
       },
       {
-        "scenario": "mirror-start",
-        "label": "gpt-5.4-mini",
-        "group": "Phase B",
-        "bias_perf": 95.997,
-        "cost_per_k": 2.6175,
-        "p95_latency_s": 2.4306
-      },
-      {
         "scenario": "random-mid",
-        "label": "P-all + corrector (nano)",
+        "label": "+ corrector",
         "group": "Phase B",
         "bias_perf": 89.3871,
         "cost_per_k": 0.7276,
@@ -5657,7 +5815,15 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning high (nano)",
+        "label": "Higher-capability model",
+        "group": "Phase B",
+        "bias_perf": 97.5519,
+        "cost_per_k": 2.597,
+        "p95_latency_s": 2.3806
+      },
+      {
+        "scenario": "random-mid",
+        "label": "Reasoning: high",
         "group": "Phase B",
         "bias_perf": 93.8026,
         "cost_per_k": 0.9946,
@@ -5665,7 +5831,7 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning low (nano)",
+        "label": "Reasoning: low",
         "group": "Phase B",
         "bias_perf": 94.8889,
         "cost_per_k": 0.7795,
@@ -5673,22 +5839,14 @@
       },
       {
         "scenario": "random-mid",
-        "label": "Reasoning medium (nano)",
+        "label": "Reasoning: medium",
         "group": "Phase B",
         "bias_perf": 94.166,
         "cost_per_k": 0.8836,
         "p95_latency_s": 7.3856
-      },
-      {
-        "scenario": "random-mid",
-        "label": "gpt-5.4-mini",
-        "group": "Phase B",
-        "bias_perf": 97.5519,
-        "cost_per_k": 2.597,
-        "p95_latency_s": 2.3806
       }
     ],
-    "n_turns": 12061
+    "n_turns": 13411
   },
   "paretoAll": [
     {
@@ -5773,7 +5931,7 @@
     },
     {
       "scenario": "mirror-start",
-      "label": "P-all + corrector (nano)",
+      "label": "+ corrector",
       "group": "Phase B",
       "bias_perf": 81.7164,
       "cost_per_k": 0.7371,
@@ -5781,7 +5939,23 @@
     },
     {
       "scenario": "mirror-start",
-      "label": "Reasoning low (nano)",
+      "label": "Higher-capability model",
+      "group": "Phase B",
+      "bias_perf": 95.997,
+      "cost_per_k": 2.6175,
+      "p95_latency_s": 2.4306
+    },
+    {
+      "scenario": "mirror-start",
+      "label": "Reasoning: high",
+      "group": "Phase B",
+      "bias_perf": 85.2593,
+      "cost_per_k": 1.0214,
+      "p95_latency_s": 10.6722
+    },
+    {
+      "scenario": "mirror-start",
+      "label": "Reasoning: low",
       "group": "Phase B",
       "bias_perf": 87.3323,
       "cost_per_k": 0.7971,
@@ -5789,23 +5963,15 @@
     },
     {
       "scenario": "mirror-start",
-      "label": "Reasoning medium (nano)",
+      "label": "Reasoning: medium",
       "group": "Phase B",
       "bias_perf": 85.5556,
       "cost_per_k": 0.9196,
       "p95_latency_s": 8.8725
     },
     {
-      "scenario": "mirror-start",
-      "label": "gpt-5.4-mini",
-      "group": "Phase B",
-      "bias_perf": 95.997,
-      "cost_per_k": 2.6175,
-      "p95_latency_s": 2.4306
-    },
-    {
       "scenario": "random-mid",
-      "label": "P-all + corrector (nano)",
+      "label": "+ corrector",
       "group": "Phase B",
       "bias_perf": 89.3871,
       "cost_per_k": 0.7276,
@@ -5813,7 +5979,15 @@
     },
     {
       "scenario": "random-mid",
-      "label": "Reasoning high (nano)",
+      "label": "Higher-capability model",
+      "group": "Phase B",
+      "bias_perf": 97.5519,
+      "cost_per_k": 2.597,
+      "p95_latency_s": 2.3806
+    },
+    {
+      "scenario": "random-mid",
+      "label": "Reasoning: high",
       "group": "Phase B",
       "bias_perf": 93.8026,
       "cost_per_k": 0.9946,
@@ -5821,7 +5995,7 @@
     },
     {
       "scenario": "random-mid",
-      "label": "Reasoning low (nano)",
+      "label": "Reasoning: low",
       "group": "Phase B",
       "bias_perf": 94.8889,
       "cost_per_k": 0.7795,
@@ -5829,19 +6003,11 @@
     },
     {
       "scenario": "random-mid",
-      "label": "Reasoning medium (nano)",
+      "label": "Reasoning: medium",
       "group": "Phase B",
       "bias_perf": 94.166,
       "cost_per_k": 0.8836,
       "p95_latency_s": 7.3856
-    },
-    {
-      "scenario": "random-mid",
-      "label": "gpt-5.4-mini",
-      "group": "Phase B",
-      "bias_perf": 97.5519,
-      "cost_per_k": 2.597,
-      "p95_latency_s": 2.3806
     }
   ]
 }

@@ -3,64 +3,51 @@
 \usepackage[T1]{fontenc}
 \usepackage[margin=1in]{geometry}
 \usepackage{microtype}
-\usepackage{enumitem}
 \usepackage{xcolor}
 \definecolor{link}{RGB}{14,123,109}
 \usepackage[colorlinks=true,urlcolor=link,linkcolor=link]{hyperref}
-\setlist{nosep,leftmargin=1.3em}
 \pagestyle{empty}
-
-\title{\vspace{-2.5em}Stress-Testing Instruction Chatbots for Economics Experiments:\\
-\large Which Workflow and Model Best Preserve Treatment Integrity?}
-\author{Can \c{C}elebi}
-\date{\small Preliminary --- \today}
+\setlength{\parindent}{0pt}
 
 \begin{document}
-\maketitle
-\vspace{-1.8em}
+\thispagestyle{empty}
 
-\noindent
-An instruction chatbot deployed inside an economics experiment is not a help tool---it is part of
-the \emph{manipulation}. It must clarify rules and refuse to supply advice, expected-value
-computations, or strategic hints. We built an adversarial \textbf{stress-test harness} that pits
-synthetic ``subject'' personas against the bot over thousands of multi-turn conversations and scores
-every reply with an independent LLM judge on three metrics: bias-leak (the integrity metric), factual
-error, and incoherence. We then asked a single deployment question: \emph{which pipeline architecture
-and which model leak the least?}
+\begin{center}
+{\large\bfseries Confining a Language Model to a Prescribed Role:}\\[2pt]
+{\bfseries An Adversarial Reliability Test for Instruction Chatbots in Economics Experiments}\\[4pt]
+{Can \c{C}elebi \quad\textperiodcentered\quad \small Preliminary, \today}
+\end{center}
+\vspace{0.6em}
 
-\smallskip
-\noindent\textbf{Design.} A two-phase plan over two scenarios (an easier mid-experiment context and a
-$\sim$2$\times$ harder cold-start context) and seven adversarial personas, 15 runs $\times$ 15 turns
-per cell. \textbf{Phase~A} (15,750 judged turns) screens five architectures, from a single
-all-in-one call to a classifier $\to$ router $\to$ per-class corrector, all at the cheapest model.
-\textbf{Phase~B} escalates the winner one lever at a time: a corrector pass, reasoning effort
-(low/medium/high), and model capability.
-
-\smallskip
-\noindent\textbf{Headline results.}
-\begin{itemize}
-  \item \textbf{Simpler is safer.} The single-call pipeline is Pareto-dominant on bias-leak, cost, and
-    latency in every cell. Every added agent (classifier, low-confidence probe gate, corrector)
-    leaves bias the same or worse---a $1.2$--$4.1\times$ penalty---because the extra steps reframe and
-    re-surface the subject's question, which is itself a contamination channel.
-  \item \textbf{Capability is the only lever that works.} Holding the winning architecture fixed,
-    upgrading the base model (\texttt{nano}$\to$\texttt{mini}) cut bias-leak \textbf{46\%} on the
-    easier scenario and \textbf{68\%} on the harder one, improved factuality, and ran faster at
-    non-binding cost. Reasoning effort was neutral-to-harmful at every level tested; a corrector pass
-    made bias \emph{worse}.
-  \item \textbf{Integrity is a per-conversation property.} Single-turn leak risk is small but
-    compounds across a 15-turn dialogue; we report per-conversation consistency, not single-shot
-    accuracy.
-\end{itemize}
-
-\smallskip
-\noindent\textbf{Caveat.} The headline upgrade cell currently shares one model between bot and judge,
-so a small self-leniency artefact cannot yet be excluded; an independent-judge confirmation cell is in
-flight. We therefore state the finding as \emph{``model capability is the lever that works,''} not as
-a final production recommendation.
-
-\smallskip
-\noindent\textbf{Full results, interactive figures, and methods:}\\
-\href{https://can-celebi.github.io/chatbot-for-experiments/}{\texttt{can-celebi.github.io/chatbot-for-experiments}}
+Language models are increasingly proposed to replace the human assistants who answer participants'
+questions during economics experiments, where the assistant must explain a task's rules while
+withholding anything that could influence the decisions under study; the reliability question is
+therefore not whether a model is helpful but how dependably it can be confined to a prescribed role
+across an adversarial, multi-turn exchange. We study this in Oprea's (2024) experiments on
+decision-making under risk, whose interpretation turns on distinguishing a participant's
+\emph{comprehension} of a lottery from the \emph{complexity} of evaluating it: an assistant there must
+reduce comprehension costs---restating rules, defining terms---without reducing complexity costs, and so
+may not give advice, compute or hint at expected values or dominance, simplify the task, signal the
+experimenter's intent, or reveal other treatments. We implement a chatbot bound by these constraints
+and ask how reliably the constraint holds as a function of system design. Without human participants, we
+generate adversarial synthetic subjects---seven participant types, each engineered to press a distinct
+failure vector---and have each conduct fifteen fifteen-turn dialogues under two experimental contexts,
+the second materially harder; every response is routed into one of six communicative categories and
+scored by an independent model judge for violation of the no-advice constraint, factual inconsistency,
+and incoherence. Across this procedure we compare five architectures, from a single constrained call to
+multi-agent configurations adding classification, low-confidence gating, and post-hoc correction, and,
+holding the best fixed, vary the base model's capability and reasoning effort---more than twenty-seven
+thousand scored responses. Architectural elaboration does not improve reliability: the single call is
+undominated on adherence, cost, and latency, and every added agent matches or worsens the violation rate
+by restating and thereby re-exposing the prohibited request. Holding architecture fixed, only greater
+base-model capability improves adherence, cutting violations by roughly forty-six and sixty-eight percent
+across the two contexts at negligible cost, whereas additional reasoning effort yields nothing and an
+explicit correction stage is harmful; because small per-response violation probabilities compound over a
+dialogue, we assess reliability per conversation rather than per turn. These findings are
+preliminary---a confirmatory condition fully separating the evaluated and evaluating models is still in
+progress---but already indicate that, for a chatbot held to a narrowly prescribed role, the capability
+of the base model rather than the elaborateness of the surrounding workflow is the binding determinant
+of reliability. Full methods and interactive results:
+\href{https://can-celebi.github.io/chatbot-for-experiments/}{\texttt{can-celebi.github.io/chatbot-for-experiments}}.
 
 \end{document}

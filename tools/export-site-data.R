@@ -168,17 +168,17 @@ flatten_b <- function(row, scenario, condition) {
     classification   = as.integer(m$classification %||% NA_integer_))
 }
 
-# Human-readable label + ordering hint for each known condition id.
+# Human-readable, codename-free label for each known condition id.
 label_condition <- function(id) {
   dplyr::case_when(
-    id == "B1-allcorr-nano"        ~ "P-all + corrector (nano)",
-    id == "B2-all-nano-R"          ~ "Reasoning low (nano)",
-    id == "B3-all-mini"            ~ "gpt-5.4-mini",
-    str_detect(id, "nano-RM|RM$")  ~ "Reasoning medium (nano)",
-    str_detect(id, "nano-RH|RH$")  ~ "Reasoning high (nano)",
-    str_detect(id, "corr.*M1|M1.*corr") ~ "gpt-5.4-mini + corrector",
-    str_detect(id, "M2$|M2-|-M2")  ~ "gpt-5.4 (full)",
-    str_detect(id, "M1")           ~ "gpt-5.4-mini",
+    id == "B1-allcorr-nano"        ~ "+ corrector",
+    id == "B2-all-nano-R"          ~ "Reasoning: low",
+    id == "B3-all-mini"            ~ "Higher-capability model",
+    str_detect(id, "nano-RM|RM$")  ~ "Reasoning: medium",
+    str_detect(id, "nano-RH|RH$")  ~ "Reasoning: high",
+    str_detect(id, "corr.*M1|M1.*corr") ~ "Higher-capability + corrector",
+    str_detect(id, "M2$|M2-|-M2")  ~ "Full-capability model",
+    str_detect(id, "M1")           ~ "Higher-capability model",
     TRUE                           ~ id)
 }
 
@@ -244,7 +244,7 @@ if (nrow(turnsB) > 0) {
   baseA <- turnsA |>
     filter(pipeline == "P-all", as.character(persona) %in% phaseB_personas) |>
     transmute(scenario = as.character(scenario), condition = "A-baseline",
-              label = "A — P-all (nano)", persona = as.character(persona),
+              label = "Baseline (single call)", persona = as.character(persona),
               run_idx, turn_idx, cost_usd_bot, latency_bot_ms,
               leak_bias, leak_fact, leak_coherence)
   allB <- bind_rows(
@@ -293,9 +293,9 @@ if (nrow(turnsB) > 0) {
               bias_perf = r3(bias_perf), cost_per_k = r3(cost_per_k),
               p95_latency_s = r3(p95_latency_s))
 
-  CANON <- c("A — P-all (nano)", "P-all + corrector (nano)",
-             "Reasoning low (nano)", "Reasoning medium (nano)", "Reasoning high (nano)",
-             "gpt-5.4-mini", "gpt-5.4-mini + corrector", "gpt-5.4 (full)")
+  CANON <- c("Baseline (single call)", "+ corrector",
+             "Reasoning: low", "Reasoning: medium", "Reasoning: high",
+             "Higher-capability model", "Higher-capability + corrector", "Full-capability model")
   present <- allB |> distinct(label) |> pull(label)
   cond_order <- c(intersect(CANON, present), setdiff(present, CANON))
   phaseB <- list(conditions = cond_order, byCondition = byCondition,

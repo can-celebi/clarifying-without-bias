@@ -7,22 +7,33 @@
 const D = window.SITE_DATA;
 if (!D) { console.error("SITE_DATA missing"); return; }
 
-/* ---------- palettes ---------- */
+/* ---------- display labels (data is keyed by internal ids) ---------- */
+const PIPE_LABEL = {
+  "P-all":"single call", "P2":"classify→respond", "P2-probe":"+ probe gate",
+  "P-perclass":"+ corrector", "P-probe-perclass":"+ gate + corrector"
+};
 const PIPE_COLOR = {
   "P-all":"#1b9e77","P2":"#d95f02","P2-probe":"#e7298a",
   "P-perclass":"#7570b3","P-probe-perclass":"#66a61e"
 };
+const SCEN_LABEL = { "random-mid":"partial-information","mirror-start":"full-information" };
 const SCEN_COLOR = { "random-mid":"#1f77b4","mirror-start":"#d62728" };
 const COND_COLOR = {
-  "A — P-all (nano)":"#1b9e77","P-all + corrector (nano)":"#7570b3",
-  "Reasoning low (nano)":"#d9a302","Reasoning medium (nano)":"#e07b02",
-  "Reasoning high (nano)":"#c2410c","gpt-5.4-mini":"#e7298a",
-  "gpt-5.4-mini + corrector":"#b5179e","gpt-5.4 (full)":"#b10026"
+  "Baseline (single call)":"#1b9e77","+ corrector":"#7570b3",
+  "Reasoning: low":"#d9a302","Reasoning: medium":"#e07b02","Reasoning: high":"#c2410c",
+  "Higher-capability model":"#e7298a","Higher-capability + corrector":"#b5179e",
+  "Full-capability model":"#b10026"
 };
+const COND_BASE = "Baseline (single call)";
+const COND_WIN  = "Higher-capability model";
 const CLASS_ORDER = ["Deny","AdviceReflect","Clarify","Complex","Example","Meta"];
-const METRIC_LABEL = { bias:"Bias leak", fact:"Factual error", coherence:"Incoherence" };
-const SCEN = D.meta.scenarios;            // ["random-mid","mirror-start"]
+const CLASS_LABEL = { Deny:"Refusal", AdviceReflect:"Advice deflection", Clarify:"Clarification",
+  Complex:"Complexity", Example:"Example", Meta:"Meta-question" };
+const METRIC_LABEL = { bias:"Constraint violations", fact:"Factual errors", coherence:"Incoherent responses" };
+const SCEN  = D.meta.scenarios;
 const PIPES = D.meta.pipelines;
+const scaleWord = lvl => lvl==="turn" ? "per-response" : "per-dialogue";
+const scaleCap  = lvl => lvl==="turn" ? "Per-response " : "Per-dialogue ";
 
 /* ---------- Plotly theme ---------- */
 const FONT = { family:"Inter, system-ui, sans-serif", size:13, color:"#16202c" };
@@ -38,7 +49,6 @@ function baseLayout(extra) {
   }, extra || {});
 }
 const pct = v => (v==null?null:+(v*100).toFixed(1));
-function orderBy(arr, order){ return arr.slice().sort((a,b)=>order.indexOf(a)-order.indexOf(b)); }
 
 /* ---------- segmented controls ---------- */
 function controls(containerId, groups, onChange) {
@@ -67,60 +77,61 @@ function controls(containerId, groups, onChange) {
 }
 
 /* ============================================================
-   1. OMNIBUS PARETO
+   1. RELIABILITY–COST FRONTIER
    ============================================================ */
 function chartPareto() {
   const rows = D.paretoAll || [];
   const traces = [];
-  [["Phase A","circle"],["Phase B","diamond"]].forEach(([grp]) => {
+  ["Phase A","Phase B"].forEach(grp => {
     SCEN.forEach(scn => {
       const r = rows.filter(x => x.group===grp && x.scenario===scn);
       if (!r.length) return;
+      const gname = grp==="Phase A" ? "architectures" : "interventions";
       traces.push({
         type:"scatter", mode:"markers+text",
-        name:`${grp} · ${scn}`,
+        name:`${gname} · ${SCEN_LABEL[scn]}`,
         x:r.map(d=>d.bias_perf), y:r.map(d=>d.cost_per_k),
-        text:r.map(d=>d.label), textposition:"top center",
-        textfont:{size:10, color:"#48586a"},
+        text:r.map(d=> grp==="Phase A" ? (PIPE_LABEL[d.label]||d.label) : d.label),
+        textposition:"top center", textfont:{size:10, color:"#48586a"},
         marker:{
           size:r.map(d=>Math.max(9, Math.min(34, 7+d.p95_latency_s*5))),
           color: grp==="Phase A" ? "#1b9e77" : "#d62728",
           symbol: scn==="random-mid" ? "circle" : "diamond",
           opacity:.82, line:{width:1.4,color:"#fff"}
         },
-        customdata:r.map(d=>[d.label, d.p95_latency_s]),
+        customdata:r.map(d=>[grp==="Phase A"?(PIPE_LABEL[d.label]||d.label):d.label, d.p95_latency_s]),
         hovertemplate:"<b>%{customdata[0]}</b><br>"+
-          "bias-clean: %{x:.1f}%<br>cost: $%{y:.2f}/1k turns<br>"+
-          "p95 latency: %{customdata[1]:.1f}s<extra>"+grp+" · "+scn+"</extra>"
+          "compliant: %{x:.1f}% of responses<br>cost: $%{y:.2f}/1k responses<br>"+
+          "p95 latency: %{customdata[1]:.1f}s<extra>"+SCEN_LABEL[scn]+"</extra>"
       });
     });
   });
   Plotly.newPlot("chart-pareto", traces, baseLayout({
-    xaxis:{ title:"Bias-clean rate (% of turns)", gridcolor:"#eef2f7", zeroline:false },
-    yaxis:{ title:"Bot cost ($ / 1,000 turns)", gridcolor:"#eef2f7", zeroline:false },
-    legend:{ orientation:"h", y:1.13, x:0, font:{size:11} }
+    xaxis:{ title:"Constraint-compliant rate (% of responses)", gridcolor:"#eef2f7", zeroline:false },
+    yaxis:{ title:"Model cost ($ / 1,000 responses)", gridcolor:"#eef2f7", zeroline:false },
+    legend:{ orientation:"h", y:1.16, x:0, font:{size:11} }
   }), CFG);
 }
 
 /* ============================================================
-   2. PHASE A — leak by pipeline (metric × level toggle)
+   2. CONSTRAINT VIOLATIONS BY ARCHITECTURE
    ============================================================ */
 function chartPipe(state) {
   const rows = D.phaseA.byPipeline.filter(r => r.metric===state.metric && r.level===state.level);
   const traces = SCEN.map(scn => {
     const r = orderByPipe(rows.filter(x=>x.scenario===scn));
     return {
-      type:"bar", name:scn,
-      x:r.map(d=>d.pipeline), y:r.map(d=>pct(d.p)),
+      type:"bar", name:SCEN_LABEL[scn],
+      x:r.map(d=>PIPE_LABEL[d.pipeline]||d.pipeline), y:r.map(d=>pct(d.p)),
       marker:{ color:SCEN_COLOR[scn] },
       error_y:{ type:"data", symmetric:false,
         array:r.map(d=>pct(d.hi-d.p)), arrayminus:r.map(d=>pct(d.p-d.lo)),
         color:"#5a6b7d", thickness:1, width:3 },
-      hovertemplate:"<b>%{x}</b><br>"+(state.level==="turn"?"turn":"run")+" "+
-        METRIC_LABEL[state.metric].toLowerCase()+": %{y:.1f}%<extra>"+scn+"</extra>"
+      hovertemplate:"<b>%{x}</b><br>"+scaleWord(state.level)+" "+
+        METRIC_LABEL[state.metric].toLowerCase()+": %{y:.1f}%<extra>"+SCEN_LABEL[scn]+"</extra>"
     };
   });
-  const ylab = (state.level==="turn"?"Turn-level ":"Run-level ")+METRIC_LABEL[state.metric].toLowerCase()+" (%)";
+  const ylab = scaleCap(state.level)+METRIC_LABEL[state.metric].toLowerCase()+" (%)";
   Plotly.react("chart-pipe", traces, baseLayout({
     barmode:"group", yaxis:{ title:ylab, gridcolor:"#eef2f7", rangemode:"tozero" }
   }), CFG);
@@ -128,7 +139,7 @@ function chartPipe(state) {
 function orderByPipe(arr){ return arr.slice().sort((a,b)=>PIPES.indexOf(a.pipeline)-PIPES.indexOf(b.pipeline)); }
 
 /* ============================================================
-   3. RISK RATIO vs P-all (bias, turn-level)
+   3. VIOLATION-RATE RATIO vs single call
    ============================================================ */
 function chartRatio() {
   const base = {};
@@ -138,43 +149,43 @@ function chartRatio() {
     const r = orderByPipe(D.phaseA.byPipeline
       .filter(x=>x.metric==="bias"&&x.level==="turn"&&x.scenario===scn&&x.pipeline!=="P-all"));
     return {
-      type:"bar", name:scn,
-      x:r.map(d=>d.pipeline), y:r.map(d=>+(d.p/base[scn]).toFixed(2)),
+      type:"bar", name:SCEN_LABEL[scn],
+      x:r.map(d=>PIPE_LABEL[d.pipeline]||d.pipeline), y:r.map(d=>+(d.p/base[scn]).toFixed(2)),
       marker:{ color:SCEN_COLOR[scn] },
       text:r.map(d=>(d.p/base[scn]).toFixed(1)+"×"), textposition:"outside",
       textfont:{size:11,color:"#48586a"},
-      hovertemplate:"<b>%{x}</b><br>%{y:.2f}× the bias risk of P-all<extra>"+scn+"</extra>"
+      hovertemplate:"<b>%{x}</b><br>%{y:.2f}× the violation rate of the single call<extra>"+SCEN_LABEL[scn]+"</extra>"
     };
   });
   Plotly.newPlot("chart-ratio", traces, baseLayout({
     barmode:"group",
-    yaxis:{ title:"Bias-leak risk ratio (P-all = 1.0)", gridcolor:"#eef2f7", rangemode:"tozero" },
+    yaxis:{ title:"Violation-rate ratio (single call = 1.0)", gridcolor:"#eef2f7", rangemode:"tozero" },
     shapes:[{ type:"line", x0:-.5, x1:3.5, y0:1, y1:1, line:{color:"#94a3b8",dash:"dash",width:1.5} }]
   }), CFG);
 }
 
 /* ============================================================
-   4. PHASE A — cumulative bias by turn (scenario toggle)
+   4. CUMULATIVE VIOLATION BY TURN (context toggle)
    ============================================================ */
 function chartCum(state) {
   const traces = PIPES.map(p => {
     const r = D.phaseA.cumulative.filter(x=>x.scenario===state.scenario&&x.pipeline===p)
       .sort((a,b)=>a.turn-b.turn);
     return {
-      type:"scatter", mode:"lines", name:p,
+      type:"scatter", mode:"lines", name:PIPE_LABEL[p]||p,
       x:r.map(d=>d.turn), y:r.map(d=>pct(d.p)),
       line:{ color:PIPE_COLOR[p], width:p==="P-all"?3.2:2 },
-      hovertemplate:"<b>%{fullData.name}</b><br>by turn %{x}: %{y:.1f}% leaked<extra></extra>"
+      hovertemplate:"<b>%{fullData.name}</b><br>by turn %{x}: %{y:.1f}% have violated<extra></extra>"
     };
   });
   Plotly.react("chart-cum", traces, baseLayout({
     xaxis:{ title:"turn within conversation", gridcolor:"#eef2f7", dtick:2 },
-    yaxis:{ title:"cumulative bias-leak (%)", gridcolor:"#eef2f7", rangemode:"tozero" }
+    yaxis:{ title:"cumulative violation probability (%)", gridcolor:"#eef2f7", rangemode:"tozero" }
   }), CFG);
 }
 
 /* ============================================================
-   5. PHASE A — bias by persona (pipeline selector)
+   5. VIOLATIONS BY SUBJECT TYPE (architecture selector)
    ============================================================ */
 function chartPersona(state) {
   const personas = D.meta.personas;
@@ -183,46 +194,47 @@ function chartPersona(state) {
       .filter(x=>x.metric==="bias"&&x.scenario===scn&&x.pipeline===state.pipeline)
       .forEach(d=>m[d.persona]=d);
     return {
-      type:"bar", name:scn,
+      type:"bar", name:SCEN_LABEL[scn],
       x:personas, y:personas.map(p=>m[p]?pct(m[p].p):null),
       marker:{ color:SCEN_COLOR[scn] },
       error_y:{ type:"data", symmetric:false,
         array:personas.map(p=>m[p]?pct(m[p].hi-m[p].p):null),
         arrayminus:personas.map(p=>m[p]?pct(m[p].p-m[p].lo):null),
         color:"#5a6b7d", thickness:1, width:3 },
-      hovertemplate:"<b>%{x}</b><br>bias-leak: %{y:.1f}%<extra>"+scn+"</extra>"
+      hovertemplate:"<b>%{x}</b><br>violation rate: %{y:.1f}%<extra>"+SCEN_LABEL[scn]+"</extra>"
     };
   });
   Plotly.react("chart-persona", traces, baseLayout({
     barmode:"group",
-    yaxis:{ title:"turn-level bias-leak (%)", gridcolor:"#eef2f7", rangemode:"tozero" },
+    yaxis:{ title:"per-response violation rate (%)", gridcolor:"#eef2f7", rangemode:"tozero" },
     xaxis:{ gridcolor:"#eef2f7", tickangle:-20 }
   }), CFG);
 }
 
 /* ============================================================
-   6. PHASE A — leak by response class (metric toggle), P-all
+   6. VIOLATIONS BY RESPONSE CATEGORY (dimension toggle)
    ============================================================ */
 function chartClass(state) {
   const traces = SCEN.map(scn => {
     const m = {}; D.phaseA.byClass
       .filter(x=>x.metric===state.metric&&x.scenario===scn).forEach(d=>m[d.class_label]=d);
     return {
-      type:"bar", name:scn,
-      x:CLASS_ORDER, y:CLASS_ORDER.map(c=>m[c]?pct(m[c].p):null),
+      type:"bar", name:SCEN_LABEL[scn],
+      x:CLASS_ORDER.map(c=>CLASS_LABEL[c]||c), y:CLASS_ORDER.map(c=>m[c]?pct(m[c].p):null),
       marker:{ color:SCEN_COLOR[scn] },
       hovertemplate:"<b>%{x}</b><br>"+METRIC_LABEL[state.metric].toLowerCase()+
-        ": %{y:.1f}%<extra>"+scn+"</extra>"
+        ": %{y:.1f}%<extra>"+SCEN_LABEL[scn]+"</extra>"
     };
   });
   Plotly.react("chart-class", traces, baseLayout({
     barmode:"group",
-    yaxis:{ title:METRIC_LABEL[state.metric]+" (%)", gridcolor:"#eef2f7", rangemode:"tozero" }
+    yaxis:{ title:METRIC_LABEL[state.metric]+" (%)", gridcolor:"#eef2f7", rangemode:"tozero" },
+    xaxis:{ gridcolor:"#eef2f7", tickangle:-15 }
   }), CFG);
 }
 
 /* ============================================================
-   7. PHASE B — which lever? (metric × level toggle)
+   7. WHICH INTERVENTION IMPROVES ADHERENCE?
    ============================================================ */
 function chartB(state) {
   const conds = D.phaseB.conditions;
@@ -231,27 +243,27 @@ function chartB(state) {
       .filter(x=>x.metric===state.metric&&x.level===state.level&&x.scenario===scn)
       .forEach(d=>m[d.label]=d);
     return {
-      type:"bar", name:scn,
+      type:"bar", name:SCEN_LABEL[scn],
       x:conds, y:conds.map(c=>m[c]?pct(m[c].p):null),
       marker:{ color:SCEN_COLOR[scn] },
       error_y:{ type:"data", symmetric:false,
         array:conds.map(c=>m[c]?pct(m[c].hi-m[c].p):null),
         arrayminus:conds.map(c=>m[c]?pct(m[c].p-m[c].lo):null),
         color:"#5a6b7d", thickness:1, width:3 },
-      hovertemplate:"<b>%{x}</b><br>"+(state.level==="turn"?"turn":"run")+" "+
-        METRIC_LABEL[state.metric].toLowerCase()+": %{y:.1f}%<extra>"+scn+"</extra>"
+      hovertemplate:"<b>%{x}</b><br>"+scaleWord(state.level)+" "+
+        METRIC_LABEL[state.metric].toLowerCase()+": %{y:.1f}%<extra>"+SCEN_LABEL[scn]+"</extra>"
     };
   });
-  const ylab = (state.level==="turn"?"Turn-level ":"Run-level ")+METRIC_LABEL[state.metric].toLowerCase()+" (%)";
+  const ylab = scaleCap(state.level)+METRIC_LABEL[state.metric].toLowerCase()+" (%)";
   Plotly.react("chart-b", traces, baseLayout({
     barmode:"group", xaxis:{ gridcolor:"#eef2f7", tickangle:-18 },
     yaxis:{ title:ylab, gridcolor:"#eef2f7", rangemode:"tozero" },
-    margin:{ l:58, r:20, t:14, b:120 }
+    margin:{ l:58, r:20, t:14, b:130 }
   }), CFG);
 }
 
 /* ============================================================
-   8. PHASE B — cumulative bias by turn (scenario toggle)
+   8. CUMULATIVE VIOLATION BY TURN — interventions (context toggle)
    ============================================================ */
 function chartBcum(state) {
   const conds = D.phaseB.conditions;
@@ -262,15 +274,15 @@ function chartBcum(state) {
     return {
       type:"scatter", mode:"lines", name:c,
       x:r.map(d=>d.turn), y:r.map(d=>pct(d.p)),
-      line:{ color:COND_COLOR[c]||"#888", width:c==="gpt-5.4-mini"?3.4:2,
-             dash:c==="A — P-all (nano)"?"dot":"solid" },
-      hovertemplate:"<b>%{fullData.name}</b><br>by turn %{x}: %{y:.1f}% leaked<extra></extra>"
+      line:{ color:COND_COLOR[c]||"#888", width:c===COND_WIN?3.4:2,
+             dash:c===COND_BASE?"dot":"solid" },
+      hovertemplate:"<b>%{fullData.name}</b><br>by turn %{x}: %{y:.1f}% have violated<extra></extra>"
     };
   }).filter(Boolean);
   Plotly.react("chart-bcum", traces, baseLayout({
     xaxis:{ title:"turn within conversation", gridcolor:"#eef2f7", dtick:2 },
-    yaxis:{ title:"cumulative bias-leak (%)", gridcolor:"#eef2f7", rangemode:"tozero" },
-    legend:{ orientation:"h", y:1.16, x:0, font:{size:11} }
+    yaxis:{ title:"cumulative violation probability (%)", gridcolor:"#eef2f7", rangemode:"tozero" },
+    legend:{ orientation:"h", y:1.18, x:0, font:{size:11} }
   }), CFG);
 }
 
@@ -278,26 +290,19 @@ function chartBcum(state) {
    STATIC CONTENT FROM DATA
    ============================================================ */
 function fillStatic() {
-  // hero chips
   const chips = document.getElementById("hero-chips");
   const total = (D.meta.phaseA_turns||0)+(D.meta.phaseB_turns||0);
-  [["",`<b>${total.toLocaleString()}</b> judged turns`],
-   ["",`<b>5</b> pipelines × <b>7</b> personas`],
-   ["",`<b>2</b> scenarios · 15-turn dialogues`],
-   ["",`bias cut <b>46–68%</b> by model upgrade`]
-  ].forEach(([,html])=>{ const s=document.createElement("span"); s.className="chip"; s.innerHTML=html; chips.appendChild(s); });
+  [`<b>${total.toLocaleString()}</b> scored responses`,
+   `<b>5</b> architectures × <b>7</b> synthetic subjects`,
+   `<b>2</b> contexts · 15-turn dialogues`,
+   `violations cut <b>46–68%</b> by a stronger base model`
+  ].forEach(html=>{ const s=document.createElement("span"); s.className="chip"; s.innerHTML=html; chips.appendChild(s); });
 
-  // stamps + scenario text + data footer
   const stamp = document.getElementById("gen-stamp");
   if (stamp) stamp.textContent = "Data generated "+D.meta.generatedAt+".";
-  if (D.meta.scenarioDesc){
-    const rm=document.getElementById("scen-rm"), ms=document.getElementById("scen-ms");
-    if(rm&&D.meta.scenarioDesc["random-mid"]) rm.textContent=D.meta.scenarioDesc["random-mid"];
-    if(ms&&D.meta.scenarioDesc["mirror-start"]) ms.textContent=D.meta.scenarioDesc["mirror-start"];
-  }
   const df=document.getElementById("data-foot");
-  if(df) df.innerHTML = `Phase A: ${(D.meta.phaseA_turns||0).toLocaleString()} turns (complete). `+
-    `Phase B: ${(D.meta.phaseB_turns||0).toLocaleString()} turns so far. Generated ${D.meta.generatedAt}.`;
+  if(df) df.innerHTML = `Architecture comparison: ${(D.meta.phaseA_turns||0).toLocaleString()} responses (complete). `+
+    `Capability/effort conditions: ${(D.meta.phaseB_turns||0).toLocaleString()} responses so far. Generated ${D.meta.generatedAt}.`;
 }
 
 /* ============================================================
@@ -308,32 +313,34 @@ function init() {
   chartPareto();
   chartRatio();
 
+  const metricOpts = [{val:"bias",label:"Violations"},{val:"fact",label:"Factual"},{val:"coherence",label:"Coherence"}];
+  const scaleOpts  = [{val:"turn",label:"Per response"},{val:"run",label:"Per dialogue"}];
+
   const ps = controls("ctrl-pipe", [
-    {key:"metric", label:"metric", options:[{val:"bias",label:"Bias"},{val:"fact",label:"Factual"},{val:"coherence",label:"Coherence"}]},
-    {key:"level",  label:"scale",  options:[{val:"turn",label:"Per turn"},{val:"run",label:"Per conversation"}]}
+    {key:"metric", label:"dimension", options:metricOpts},
+    {key:"level",  label:"scale",     options:scaleOpts}
   ], chartPipe); chartPipe(ps);
 
   const cs = controls("ctrl-cum", [
-    {key:"scenario", label:"scenario", options:SCEN.map(s=>({val:s,label:s}))}
+    {key:"scenario", label:"context", options:SCEN.map(s=>({val:s,label:SCEN_LABEL[s]}))}
   ], chartCum); chartCum(cs);
 
   const prs = controls("ctrl-persona", [
-    {key:"pipeline", label:"pipeline", options:PIPES.map(p=>({val:p,label:p}))}
+    {key:"pipeline", label:"architecture", options:PIPES.map(p=>({val:p,label:PIPE_LABEL[p]||p}))}
   ], chartPersona); chartPersona(prs);
 
   const cls = controls("ctrl-class", [
-    {key:"metric", label:"metric", options:[{val:"bias",label:"Bias"},{val:"fact",label:"Factual"},{val:"coherence",label:"Coherence"}]}
+    {key:"metric", label:"dimension", options:metricOpts}
   ], chartClass); chartClass(cls);
 
-  // Phase B (guard if absent)
   const hasB = D.phaseB && D.phaseB.byCondition && D.phaseB.byCondition.length;
   if (hasB) {
     const bs = controls("ctrl-b", [
-      {key:"metric", label:"metric", options:[{val:"bias",label:"Bias"},{val:"fact",label:"Factual"},{val:"coherence",label:"Coherence"}]},
-      {key:"level",  label:"scale",  options:[{val:"turn",label:"Per turn"},{val:"run",label:"Per conversation"}]}
+      {key:"metric", label:"dimension", options:metricOpts},
+      {key:"level",  label:"scale",     options:scaleOpts}
     ], chartB); chartB(bs);
     const bcs = controls("ctrl-bcum", [
-      {key:"scenario", label:"scenario", options:SCEN.map(s=>({val:s,label:s}))}
+      {key:"scenario", label:"context", options:SCEN.map(s=>({val:s,label:SCEN_LABEL[s]}))}
     ], chartBcum); chartBcum(bcs);
   } else {
     document.querySelectorAll("#chart-b, #chart-bcum").forEach(el=>{
