@@ -13,36 +13,45 @@
 \thispagestyle{empty}
 
 \begin{center}
-{\large\bfseries Confining a Language Model to a Prescribed Role:}\\[2pt]
-{\bfseries An Adversarial Reliability Test for Instruction Chatbots in Economics Experiments}\\[4pt]
-{Can \c{C}elebi \quad\textperiodcentered\quad \small Preliminary, \today}
+{\large\bfseries Clarifying Without Bias: Chatbots in Experimental Economics}\\[3pt]
+{\small Can \c{C}elebi \quad\textperiodcentered\quad Preliminary, \today}
 \end{center}
 \vspace{0.6em}
 
-In many economics experiments a research assistant answers participants' questions about the task. The
-assistant must explain the rules, but must never give advice or hint at the best choice---that would
-change the very behavior being studied. We ask a simple question: can a language-model chatbot be
-trusted to stay inside this role, and what makes it reliable? We build such a chatbot for Oprea's (2024)
-experiments on choice under risk, where the central debate is about separating what participants
-\emph{understand} from how \emph{complex} the task is to think through. Our chatbot is therefore allowed
-to clarify the rules, but is forbidden to give advice, work out the best option, or make the task look
-simpler than it is. To test it without human participants, we let adversarial ``synthetic
-subjects''---language models playing seven kinds of difficult participant---try to pull the chatbot out
-of its role over many 15-turn conversations, more than 27,000 replies in total. An independent model
-then judges every reply: did it break the no-advice rule, say something false, or fail to make sense?
-Using this setup we compare different chatbot designs.
+A standing threat to inference in experimental economics is that subjects may simply not understand the
+task. When choices reflect confusion about the rules or payoffs rather than underlying preferences, the
+resulting behavior can mimic the very objects experiments seek to measure: confusion has been shown to
+inflate apparent fairness, cooperation, trust, and other-regarding behavior across canonical games, and
+to contaminate elicited risk attitudes. Because the same data are used to build theory and to inform
+policy, confusion that goes unaddressed distorts both. Experimenters therefore work to clarify
+instructions, often relying on research assistants to answer subjects' questions during a session---but
+a human assistant is costly, inconsistent across sessions, and can itself bias choices by hinting at the
+``right'' answer. This motivates our question: can a large language model take over the assistant's
+role, reducing confusion by clarifying the rules without introducing bias by giving advice?
 
 \medskip
-The main result is clear. A \emph{simpler} design is safer: a single, well-instructed model call is the
-most reliable, and every extra ``guardrail'' agent we add makes things worse, not better, because the
-added steps tend to repeat the participant's forbidden question back to them. The one change that helps
-is a \emph{stronger base model}: it cut rule-breaking replies from about 12\% to 4\% on the hardest
-test, while also being more accurate and faster. Adding reasoning steps or a correction pass did not
-help. We measure reliability over a whole conversation, not a single reply, because small per-reply
-risks add up: even a chatbot that slips only 4\% of the time will slip at least once in most 15-turn
-conversations. These results are still preliminary, but the lesson is already clear---for a chatbot that
-must stay in a strict role, the quality of the base model matters far more than how elaborate the
-surrounding workflow is. Full methods and interactive results:
+Answering it requires a chatbot that clarifies but never steers, and a way to measure how reliably it
+stays within that role. We study the question in Oprea's (2024) experiments on choice under risk, where
+the interpretation of behavior hinges on separating what subjects \emph{comprehend} from how
+\emph{complex} the task is to evaluate. Our chatbot may restate rules and define terms, but is forbidden
+to give advice, compute the best option, or reduce the task's complexity. To evaluate it without running
+human sessions, we have adversarial ``synthetic subjects''---language models instructed to behave like
+difficult participants who seek advice, demand worked examples, or probe for the experimenter's
+intent---attack the chatbot over many fifteen-turn conversations, more than 27{,}000 replies in total,
+while an independent model scores every reply for advice-giving, factual error, and incoherence. Within
+this design we compare alternative chatbot architectures and base models.
+
+\medskip
+Two results stand out. First, a \emph{simpler} design is more reliable: a single, well-instructed model
+call adheres best, and each additional ``guardrail'' agent we add makes advice-giving more common, not
+less, because the extra steps tend to repeat the subject's forbidden request back to them. Second, the
+one change that clearly helps is a \emph{stronger base model}, which cut rule-breaking replies from about
+12\% to 4\% on the hardest case while also improving accuracy and speed; adding reasoning steps or a
+correction pass did not help. Because small per-reply risks accumulate, we evaluate reliability over a
+whole conversation rather than a single turn. These findings are preliminary---a confirmation that fully
+separates the chatbot from the model judging it is still running---but they already suggest that, for a
+chatbot meant to clarify without biasing, the capability of the base model matters more than the
+elaborateness of the surrounding workflow. Full methods and interactive results:
 \href{https://can-celebi.github.io/chatbot-for-experiments/}{\texttt{can-celebi.github.io/chatbot-for-experiments}}.
 
 \end{document}
