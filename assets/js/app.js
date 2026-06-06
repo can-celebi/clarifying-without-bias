@@ -18,7 +18,7 @@ async function renderMermaid(el, src){
 }
 
 /* ---------------- routing ---------------- */
-const VIEWS = ["background","methodology","build","pipelines","subjects","classifier","evaluation","conversations","literature","results","discussion","future"];
+const VIEWS = ["background","methodology","pipelines","subjects","classifier","evaluation","conversations","literature","results","discussion","future"];
 const built = {};
 function showHome(){
   document.querySelectorAll(".landing").forEach(e=>e.style.display="");
@@ -73,7 +73,6 @@ const CARDS = [
   { v:"background",    icon:"🎯", title:"Background", teaser:"Why this exists: how confusion masquerades as preference, what Oprea's experiment is (with a diagram), his main result that risk anomalies are really complexity, and the debate it sparked." },
   { v:"results",       icon:"📊", title:"Results", teaser:"Interactive charts on the canonical strict-judge rates: frontier, architecture, model size, accumulation, by subject and category — the leaderboard, the statistical tests, and the threat model." },
   { v:"methodology",   icon:"🧪", title:"Methodology", teaser:"How the study was designed and run — the chatbot's role, the adversarial protocol, the boundary it must hold, the models and conditions, and the scoring. Opens into the building blocks: pipelines, subjects, the classifier, and the judges." },
-  { v:"build",         icon:"🛠️", title:"How it's built", teaser:"The engineering: one portable, config-driven chatbot core that drops into the live experiment unchanged, the adversarial harness that tests it, and how every number regenerates from the raw logs through a single script." },
   { v:"conversations", icon:"💬", title:"Conversations", teaser:"A curated sample of real transcripts — clean refusals and the rare flagged turns — with strict judgments and pipeline traces." },
   { v:"literature",    icon:"📚", title:"Literature", teaser:"The confusion-in-experiments debate behind the question, the Oprea complexity paradigm, and the LLM-agent evidence behind the design — the full discussion, every source linked." },
   { v:"discussion",    icon:"🧩", title:"Discussion", teaser:"What it means: simpler is safer, model size is the main determinant, and where the residual bias actually lives — plus deployment advice." },

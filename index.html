@@ -322,50 +322,6 @@
   </div>
 </section>
 
-<!-- HOW IT'S BUILT -->
-<section class="detail" id="view-build">
-  <div class="detail-head">
-    <button class="backbtn" data-home>&larr; All views</button>
-    <h2 class="kicker">How it's built</h2>
-    <p class="section-lead">Two pieces of software, one principle: the configuration that wins the
-      stress-test is the configuration that gets deployed &mdash; unchanged.</p>
-  </div>
-  <div class="cards two">
-    <div class="card">
-      <h3>The chatbot core</h3>
-      <p>A portable, config-driven module with a single entry point &mdash;
-      <code>respondToMessage({message, history, pageState, config})</code>. The pipeline architecture, the
-      per-agent model assignments, the prompts (Markdown) and the output schemas (JSON) all live in editable
-      files, not in code. The same module powers the stress-test and drops straight into the live nodeGame
-      experiment.</p>
-    </div>
-    <div class="card">
-      <h3>The stress-test harness</h3>
-      <p>An adversarial test rig: synthetic-subject personas attack the bot over many fifteen-turn
-      conversations while independent judge models score every reply. Personas, judge metrics, and the
-      pipeline × model configurations are all JSON; a runner executes the sweep and a reporter rolls the
-      per-turn logs up into the analysis.</p>
-    </div>
-  </div>
-  <div class="callout">
-    <h4>Round-trip integrity</h4>
-    <p>Both contexts &mdash; the test and the live experiment &mdash; consume the <em>same</em>
-    <code>core.respondToMessage</code> and the <em>same</em> JSON config files. Picking a winner is saving a
-    config; deploying it is loading that config. There is no separate "production" rewrite that could drift
-    from what was actually measured.</p>
-  </div>
-  <div class="callout">
-    <h4>Reproducibility</h4>
-    <p>Every leak / error rate on this site regenerates from the raw per-turn logs through a single script,
-    which <strong>self-tests</strong> its aggregates against the canonical rate table (it aborts on any
-    mismatch). The strict judge is calibrated to a 26-case hand-built gold control set; the full prompts and
-    schemas are in the <a href="#evaluation">Evaluation</a> view, the agents in
-    <a href="#pipelines">Pipelines</a>.</p>
-  </div>
-  <p class="fine">The codebase is two projects &mdash; the chatbot core (deployed inside the nodeGame
-    experiment) and the stress-test package &mdash; kept deliberately separate from this results page.</p>
-</section>
-
 <!-- PIPELINES -->
 <section class="detail" id="view-pipelines">
   <div class="detail-head">
