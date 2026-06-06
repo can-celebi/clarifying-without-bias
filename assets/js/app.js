@@ -257,7 +257,7 @@ function fillStatic(){
   const cut = nano>0 ? Math.round(100*(1-mini/nano)) : 0;
   const chips = $("#hero-chips");
   [`<b>${D.meta.nTurns.toLocaleString()}</b> scored responses`,
-   `<b>5</b> architectures × <b>5</b> adversarial subjects`,
+   `<b>6</b> pipelines × <b>5</b> adversarial subjects`,
    `<b>${D.meta.nConditions}</b> conditions · 15-turn dialogues`,
    `bias cut <b>~${cut}%</b> by a stronger base model`
   ].forEach(h=>{ const s=document.createElement("span"); s.className="chip"; s.innerHTML=h; chips.appendChild(s); });

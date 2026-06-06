@@ -247,6 +247,9 @@ const PIPELINE_CONTENT = {
     'P-all': { label: 'Single call (∅)', short: 'one constrained model call',
         agents: 1, best: true,
         desc: 'A single LLM call that internally classifies the message and replies in one step. No router, no specialists, no corrector. The Pareto-dominant architecture: lowest bias, cost, and latency in every cell.' },
+    'P-all-corr': { label: 'Single call + corrector (∅+C)', short: 'one call, then one generic corrector',
+        agents: 2,
+        desc: 'The single call followed by one class-agnostic corrector: allInOne writes the reply, then a single correctorAll pass audits it and rewrites only if it flags a violation — two model calls per turn. On a capable responder it is neutral (no better than the single call); on 5.4-nano it backfires.' },
     'P2': { label: 'Classify → specialist (RS)', short: 'router + one of six specialists',
         agents: 7,
         desc: 'A classifier routes the message to one of six specialist agents (deny / reflect / clarify / complex / example / meta), each with its own refusal discipline. Tests whether routing alone helps — it does not; the bare router is the worst architecture.' },
@@ -261,22 +264,39 @@ const PIPELINE_CONTENT = {
         desc: 'The most elaborate pipeline: probe gate, classifier, specialist, and per-class corrector combined. The most machinery and, predictably, among the worst on bias.' },
 };
 // bot agents: per-pipeline lists + which schema file each agent uses
-const AGENT_SCHEMA = { allInOne:'allInOne', classify:'classify', probe:'probe', deny:'deny',
-  reflect:'reflect', clarify:'clarify', complex:'complex', example:'example', meta:'meta',
+const AGENT_SCHEMA = { allInOne:'allInOne', correctorAll:'corrector', classify:'classify', probe:'probe',
+  deny:'deny', reflect:'reflect', clarify:'clarify', complex:'complex', example:'example', meta:'meta',
   correctorClarify:'corrector', correctorExample:'corrector', correctorMeta:'corrector' };
-const AGENT_LABEL = { allInOne:'allInOne — single call', classify:'classify — router',
-  probe:'probe — clarifying gate', deny:'deny', reflect:'reflect', clarify:'clarify', complex:'complex',
-  example:'example', meta:'meta', correctorClarify:'corrector · clarify',
+const AGENT_LABEL = { allInOne:'allInOne — single call', correctorAll:'correctorAll — single generic corrector',
+  classify:'classify — router', probe:'probe — clarifying gate', deny:'deny', reflect:'reflect',
+  clarify:'clarify', complex:'complex', example:'example', meta:'meta', correctorClarify:'corrector · clarify',
   correctorExample:'corrector · example', correctorMeta:'corrector · meta' };
 const PIPE_AGENTS = {
   'P-all': ['allInOne'],
+  'P-all-corr': ['allInOne','correctorAll'],
   'P2': ['classify','deny','reflect','clarify','complex','example','meta'],
   'P2-probe': ['classify','probe','deny','reflect','clarify','complex','example','meta'],
   'P-perclass': ['classify','deny','reflect','clarify','complex','example','meta','correctorClarify','correctorExample','correctorMeta'],
   'P-probe-perclass': ['classify','probe','deny','reflect','clarify','complex','example','meta','correctorClarify','correctorExample','correctorMeta'],
 };
-const pipelines = PIPELINES.map(id => ({
-    id, ...PIPELINE_CONTENT[id], mermaid: diagramForPipeline(id), agents: PIPE_AGENTS[id] || [],
+// ∅+C is not in the package's diagram generator; build its flowchart here.
+const PALLCORR_MERMAID = [
+  'flowchart TD',
+  '  USER([Subject message])',
+  '  ALL["<b>allInOne</b><br/>(single call: classifies AND replies)"]',
+  '  CORR["<b>correctorAll</b><br/>(one generic corrector: audits the reply,<br/>rewrites only if it flags a violation)"]',
+  '  REPLY([Bot reply])',
+  '  USER --> ALL --> CORR --> REPLY',
+  '  classDef agent fill:#dbeafe,stroke:#3b82f6,stroke-width:1px',
+  '  classDef verifier fill:#fce7f3,stroke:#ec4899,stroke-width:1px',
+  '  class ALL agent',
+  '  class CORR verifier',
+].join('\n');
+const PIPE_DISPLAY_ORDER = ['P-all','P-all-corr','P2','P2-probe','P-perclass','P-probe-perclass'];
+const pipelines = PIPE_DISPLAY_ORDER.map(id => ({
+    id, ...PIPELINE_CONTENT[id],
+    mermaid: id === 'P-all-corr' ? PALLCORR_MERMAID : diagramForPipeline(id),
+    agents: PIPE_AGENTS[id] || [],
 }));
 
 // classifier + specialists

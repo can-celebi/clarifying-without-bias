@@ -270,8 +270,9 @@
     three integrity errors plus a coherence check.</p>
 
     <h3 class="subhead">What was varied, and how much was run</h3>
-    <p>The bot was tested across <strong>five architectures</strong> (from a single constrained call to a
-    probe-gated router with per-class correctors) and <strong>three model tiers</strong> (5.4-nano, mini,
+    <p>The bot was tested across <strong>six pipelines</strong> (from a single constrained call, with and
+    without a corrector, up to a probe-gated router with per-class correctors) and <strong>three model
+    tiers</strong> (5.4-nano, mini,
     and the full 5.4), with reasoning-effort and corrector variants &mdash; <strong>36 conditions</strong>
     in all. Every condition ran under <strong>two scenarios</strong> (an easier, experienced-subject
     context and a ~2× harder, new-subject context), with 15 independent runs of 15 turns each &mdash; more
@@ -315,7 +316,7 @@
   <h3 class="subhead">The building blocks</h3>
   <p class="section-lead">Open each for the full detail &mdash; prompts, schemas, diagrams, and numbers.</p>
   <div class="cardgrid">
-    <a class="navcard" href="#pipelines"><div class="navcard-ic">🔀</div><h3>Pipelines</h3><p>The five architectures, their flow diagrams, and the distinct agents in each (with prompts &amp; schemas).</p><span class="navcard-go">Open &rarr;</span></a>
+    <a class="navcard" href="#pipelines"><div class="navcard-ic">🔀</div><h3>Pipelines</h3><p>The six pipeline architectures, their flow diagrams, and the distinct agents in each (with prompts &amp; schemas).</p><span class="navcard-go">Open &rarr;</span></a>
     <a class="navcard" href="#subjects"><div class="navcard-ic">🎭</div><h3>Subjects</h3><p>The five adversarial synthetic participants, with their full system prompts and opening lines.</p><span class="navcard-go">Open &rarr;</span></a>
     <a class="navcard" href="#classifier"><div class="navcard-ic">🧭</div><h3>Classification agent</h3><p>The six-category router and its six specialists, each with its own refusal discipline.</p><span class="navcard-go">Open &rarr;</span></a>
     <a class="navcard" href="#evaluation"><div class="navcard-ic">⚖️</div><h3>Evaluation</h3><p>The judges that score every reply &mdash; bias, factual, coherence, and the strict combined judge &mdash; with prompts &amp; schemas.</p><span class="navcard-go">Open &rarr;</span></a>
@@ -327,9 +328,9 @@
   <div class="detail-head">
     <button class="backbtn" data-home>&larr; All views</button>
     <h2 class="kicker">Pipelines &mdash; the architectures under test</h2>
-    <p class="section-lead">The same modular agents are composed into five candidate architectures, from a
-      single constrained call to a probe gate + classifier + specialists + per-class correctors. Pick one
-      to see its flow.</p>
+    <p class="section-lead">The same modular agents are composed into six candidate architectures, from a
+      single constrained call (with and without a corrector) to a probe-gated classifier + specialists +
+      per-class correctors. Pick one to see its flow.</p>
   </div>
   <div class="pipe-tabs" id="pipe-tabs"></div>
   <div class="pipe-detail">

@@ -16,9 +16,9 @@ const METRIC_LABEL = { bias:"Bias leak", fact:"Factual error", cmplx:"Complexity
 const MODEL_LABEL = { nano:"5.4-nano", mini:"5.4-mini", "gpt-5.4":"5.4" };
 const MODEL_COLOR = { nano:"#d95f02", mini:"#1b9e77", "gpt-5.4":"#4f46e5" };
 
-const ARCH = ["P-all","P2","P2-probe","P-perclass","P-probe-perclass"];          // order
-const ARCH_SHORT = { "P-all":"∅ single call", "P2":"RS router", "P2-probe":"RS+probe",
-  "P-perclass":"RS+corrector", "P-probe-perclass":"RS+probe+corr" };
+const ARCH = ["P-all","B1-allcorr-nano","P2","P2-probe","P-perclass","P-probe-perclass"];   // 6 pipelines, 5.4-nano
+const ARCH_SHORT = { "P-all":"∅ single call", "B1-allcorr-nano":"∅+corrector", "P2":"RS router",
+  "P2-probe":"RS+probe", "P-perclass":"RS+corrector", "P-probe-perclass":"RS+probe+corr" };
 const CAP_LADDER = [                                  // ∅ across capability/effort
   { condId:"P-all",                short:"nano" },
   { condId:"B2-all-nano-R",        short:"nano · reason low" },
