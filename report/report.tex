@@ -14,7 +14,7 @@
 
 \begin{center}
 {\large\bfseries Clarifying Without Bias: Chatbots in Experimental Economics}\\[3pt]
-{\small Can \c{C}elebi \quad\textperiodcentered\quad Preliminary, \today}
+{\small Can \c{C}elebi \quad\textperiodcentered\quad \today}
 \end{center}
 \vspace{0.6em}
 
@@ -25,8 +25,8 @@ inflate apparent fairness, cooperation, trust, and other-regarding behavior acro
 to contaminate elicited risk attitudes. Because the same data are used to build theory and to inform
 policy, confusion that goes unaddressed distorts both. Experimenters therefore work to clarify
 instructions, often relying on research assistants to answer subjects' questions during a session---but
-a human assistant is costly, inconsistent across sessions, and can itself bias choices by hinting at the
-``right'' answer. This motivates our question: can a large language model take over the assistant's
+a human assistant is costly, what they tell each subject goes unrecorded and uncontrolled, and turning to
+a person can itself introduce bias. This motivates our question: can a large language model take over the assistant's
 role, reducing confusion by clarifying the rules without introducing bias by giving advice?
 
 \medskip
@@ -37,21 +37,25 @@ the interpretation of behavior hinges on separating what subjects \emph{comprehe
 to give advice, compute the best option, or reduce the task's complexity. To evaluate it without running
 human sessions, we have adversarial ``synthetic subjects''---language models instructed to behave like
 difficult participants who seek advice, demand worked examples, or probe for the experimenter's
-intent---attack the chatbot over many fifteen-turn conversations, more than 27{,}000 replies in total,
+intent---attack the chatbot over many fifteen-turn conversations, more than 40{,}000 replies in total,
 while an independent model scores every reply for advice-giving, factual error, and incoherence. Within
 this design we compare alternative chatbot architectures and base models.
 
 \medskip
 Two results stand out. First, a \emph{simpler} design is more reliable: a single, well-instructed model
-call adheres best, and each additional ``guardrail'' agent we add makes advice-giving more common, not
-less, because the extra steps tend to repeat the subject's forbidden request back to them. Second, the
-one change that clearly helps is a \emph{stronger base model}, which cut rule-breaking replies from about
-12\% to 4\% on the hardest case while also improving accuracy and speed; adding reasoning steps or a
-correction pass did not help. Because small per-reply risks accumulate, we evaluate reliability over a
-whole conversation rather than a single turn. These findings are preliminary---a confirmation that fully
-separates the chatbot from the model judging it is still running---but they already suggest that, for a
-chatbot meant to clarify without biasing, the capability of the base model matters more than the
-elaborateness of the surrounding workflow. Full methods and interactive results:
-\href{https://can-celebi.github.io/chatbot-for-experiments/}{\texttt{can-celebi.github.io/chatbot-for-experiments}}.
+call adheres best, and each additional ``guardrail'' agent we add leaves rule-breaking unchanged or more
+common, because the extra steps tend to repeat the subject's forbidden request back to them. Second, the
+one change that clearly helps is a \emph{stronger base model}, which cut the bias rate from about 3\% to
+under 1\% on the hardest case while also improving accuracy and speed; adding reasoning effort or a
+correction pass did not help. Under strict adjudication two of the three error terms nearly vanish:
+factual ``errors'' were almost entirely false positives of the first-pass judge, and complexity
+violations are rare on any capable model---so the only axis with appreciable signal is \emph{bias}, and
+within bias the residual is not outright advice but the bot introducing expected-value or risk language.
+Because small per-reply risks accumulate, we report reliability over a whole conversation rather than a
+single turn; and because the reported bias rate counts only the conversations a cheap first-pass judge
+flagged for review, it is a conservative lower bound. The upshot: for a chatbot meant to clarify without
+biasing, the size of the base model matters more than the elaborateness of the surrounding
+workflow. Full methods and interactive results:
+\href{https://can-celebi.github.io/clarifying-without-bias/}{\texttt{can-celebi.github.io/clarifying-without-bias}}.
 
 \end{document}

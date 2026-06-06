@@ -1,6 +1,11 @@
 #!/usr/bin/env Rscript
 # =====================================================================
-# export-site-data.R  —  single source of truth for the live site data
+# DEPRECATED (2026-06-06). Superseded by tools/build-site-data.js.
+# This script recomputed the older first-pass (v1) judge rates; the live
+# site now uses the canonical STRICT-judge rates produced by the Node
+# exporter. Kept for reference only — do not use to regenerate the site.
+# =====================================================================
+# export-site-data.R  —  (old) source of truth for the live site data
 # ---------------------------------------------------------------------
 # Reads the canonical stress-test artefacts and emits compact JSON that
 # the static site (index.html + assets/js/charts.js) consumes.
