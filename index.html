@@ -712,23 +712,25 @@
     and read off how much of Oprea's anomaly is really comprehension. The planned design is a ladder of
     arms:</p>
   </div>
-  <div class="arms">
+  <div class="arms three">
     <div class="arm"><div class="arm-id">A0</div><h4>No chatbot</h4><p>Standard Oprea instructions, no assistant &mdash; the control.</p></div>
-    <div class="arm"><div class="arm-id">A1</div><h4>Strict clarification <span class="soon">planned</span></h4><p>Explains what the rules <em>say</em> but refuses any procedure or worked example &mdash; isolates rule clarity alone.</p></div>
-    <div class="arm"><div class="arm-id">A2</div><h4>Standard clarification</h4><p>Clarifies rules and works the instructions' own teaching examples &mdash; the full comprehension-cost reduction.</p></div>
-    <div class="arm"><div class="arm-id">A3</div><h4>+ computation <span class="soon">planned</span></h4><p>Also performs EV / threshold computation on demand <em>without</em> recommending a choice &mdash; the maximal-help bound.</p></div>
+    <div class="arm"><div class="arm-id">A1</div><h4>Clarification only</h4><p>A chatbot that explains the rules and never advises &mdash; and is <strong>not allowed to reduce complexity</strong>: it will not set up or perform the subject's valuation. Isolates pure rule clarity.</p></div>
+    <div class="arm"><div class="arm-id">A2</div><h4>Clarification + complexity help</h4><p>The same no-advice clarifier, but now <strong>allowed to reduce complexity</strong> &mdash; it may help structure or work through the valuation. It still never recommends a choice.</p></div>
   </div>
+  <p class="chartnote"><strong>A0 → A1</strong> isolates the effect of rule clarity; <strong>A1 → A2</strong>
+    isolates the effect of <em>complexity reduction</em> &mdash; the channel Oprea's design most directly
+    measures. Every chatbot arm withholds advice, so bias is held fixed across the comparison.</p>
   <div class="prose">
     <h3 class="subhead">On the roadmap</h3>
     <ul class="reco">
       <li><strong>Live lab deployment.</strong> Drop the winning configuration (the single call on 5.4-mini) into the nodeGame experiment and run real Oprea-style sessions, measuring the causal effect of clarification on the size of the complexity anomaly.</li>
       <li><strong>Independent-judge confirmation.</strong> A fully separate judge model, plus human spot-checks, to confirm the integrity rates are not an artefact of the scoring model.</li>
       <li><strong>Generalization.</strong> Extend the same harness to other paradigms where confusion contaminates inference &mdash; public-goods, trust, and ultimatum games.</li>
-      <li><strong>Arm-level integrity checks.</strong> Stress-test A1&ndash;A3 separately so each manipulates only its target channel before any live use.</li>
+      <li><strong>Arm-level integrity checks.</strong> Stress-test the A1 and A2 clarifiers separately so each manipulates only its target channel &mdash; rule clarity, then complexity &mdash; before any live use.</li>
     </ul>
-    <p class="fine">The arms beyond A0/A2 (the <code>strict-clarify</code> and <code>compute</code> agents)
-    are designed but <strong>not yet built</strong>; live deployment and generalization are <strong>planned,
-    not completed</strong>. The stress-test reported here is the foundation they stand on.</p>
+    <p class="fine">The two clarifier arms (A1 without complexity help, A2 with it), the live deployment, and
+    generalization are <strong>planned, not yet run</strong>. The stress-test reported here is the
+    foundation they stand on.</p>
   </div>
 </section>
 
