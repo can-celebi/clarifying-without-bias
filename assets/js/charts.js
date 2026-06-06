@@ -116,11 +116,15 @@ function chartPareto(state){
       hoverinfo:"skip", showlegend:true });
   });
   const ann = [];
+  const narrow = (typeof window !== "undefined" && window.innerWidth < 760);
+  const legend = narrow
+    ? { orientation:"h", x:0, y:-0.22, yanchor:"top", font:{size:10}, tracegroupgap:8 }
+    : { orientation:"v", x:1.02, y:1, xanchor:"left", font:{size:11}, tracegroupgap:14 };
+  const margin = narrow ? { l:50, r:16, t:14, b:150 } : { l:64, r:188, t:16, b:58 };
   Plotly.react("chart-pareto", traces, baseLayout({
     xaxis:{ title:"bias-compliant replies (%)  →  better", gridcolor:"#eef2f7", zeroline:false },
     yaxis:{ title:"cost ($ per 1,000 replies)  ↓ cheaper", gridcolor:"#eef2f7", zeroline:false },
-    legend:{ orientation:"v", x:1.02, y:1, xanchor:"left", font:{size:11}, tracegroupgap:14 },
-    margin:{ l:64, r:188, t:16, b:58 }, annotations:ann
+    legend, margin, annotations:ann
   }), CFG);
 }
 

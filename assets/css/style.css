@@ -425,6 +425,29 @@ a.lit-item:hover{text-decoration:none;transform:translateY(-2px);box-shadow:var(
 .leader.threat th,.leader.threat td{text-align:left;font-family:inherit;vertical-align:top}
 .risk-lo{color:#16a34a;font-weight:600}.risk-md{color:#d97706;font-weight:600}.risk-hi{color:var(--bias);font-weight:700}
 
+/* ---------- mobile ---------- */
+@media(max-width:640px){
+  .section{padding:3rem 1rem}
+  .detail{padding:2rem 1rem 3.5rem}
+  .hero{padding:3.6rem 1rem 2.6rem}
+  .kicker{font-size:1.55rem}
+  .section-lead{font-size:1rem}
+  .plot{height:380px}
+  .chartcard{padding:1.1rem 1rem .9rem}
+  .card,.persona-card,.eval-card,.agent-card,.errdef,.navcard,.arm,.class-card,.pipe-meta,.lit-item,.osch-col,.osch-rule{padding:1.05rem 1.1rem}
+  .cardgrid{gap:.9rem}
+  .prose{max-width:100%}
+  pre{font-size:.72rem}
+  .abstract-box{padding:1rem 1.1rem}
+  .abstract-box p{font-size:.93rem}
+  .chartnote,.termgloss{font-size:.85rem}
+}
+@media(max-width:420px){
+  .plot{height:340px}
+  .kicker{font-size:1.35rem}
+  .hero h1{font-size:1.9rem}
+}
+
 /* ---------- FOOTER ---------- */
 .footer{background:#0e1726;color:#c4d2e6;text-align:center;padding:2.4rem 1.25rem}
 .footer .fine{color:#7e91ad;margin-top:.4rem}

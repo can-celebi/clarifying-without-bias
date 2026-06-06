@@ -56,7 +56,7 @@ function openDiagram(srcEl){
   const body = m.querySelector(".dmodal-body");
   body.innerHTML = srcEl.innerHTML;
   const svg = body.querySelector("svg");
-  if (svg){ svg.style.maxWidth="none"; svg.style.width="min(48vw, 640px)"; svg.style.maxHeight="82vh";
+  if (svg){ svg.style.maxWidth="none"; svg.style.width="min(640px, 88vw)"; svg.style.maxHeight="82vh";
     svg.style.height="auto"; svg.removeAttribute("height"); }
   m.hidden = false;
 }
